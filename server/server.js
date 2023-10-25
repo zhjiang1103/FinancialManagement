@@ -1,8 +1,11 @@
 const express = require('express');
+const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
 const db = require('./db/db-connection.js');
+const OpenAI= require ('openai');
+
 
 
 const app = express();
@@ -30,6 +33,20 @@ app.get('/api/movies', async (req, res) => {
       console.error(e);
       return res.status(400).json({ e });
   }
+});
+
+const openai = new OpenAI({ apiKey: process.env.openai_key});
+app.post('/api/films/recommendation', async(req,res) => {
+    
+  const completion = await openai.chat.completions.create({
+      messages: [{ role: "system", content: "Please provide 5 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone who is age 40 and likes action movies. " }],
+      model: "gpt-3.5-turbo",
+    });
+  
+    console.log(completion.choices[0]);
+    console.log("Content", completion.choices[0].message.content);
+    res.json((JSON.parse(completion.choices[0].message.content)));
+
 });
 
 // // create the POST request
