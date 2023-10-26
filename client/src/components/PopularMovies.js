@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react'
 import axios from 'axios';
+import PageNav from './PageNav';
 
 
 // import ViewFilm from './ViewFilm'
@@ -41,6 +42,7 @@ const apiKey= process.env.REACT_APP_API_KEY
   
     return (
       <div>
+   
         <h2>Popular Movies</h2>
         <ul>
           {movies.map(movie => (
