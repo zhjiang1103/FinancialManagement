@@ -4,7 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
 const db = require('./db/db-connection.js');
-const OpenAI= require ('openai');
+const OpenAI = require('openai');
+const fetch = require('node-fetch');
 
 
 
@@ -26,28 +27,49 @@ app.get('/', (req, res) => {
 // create the get request
 app.get('/api/movies', async (req, res) => {
   try {
-     // const { rows: contact } = await db.query('SELECT * FROM contact');
-      const { rows: movie } = await db.query('SELECT * FROM movies');
-      res.send(movie);
+    // const { rows: contact } = await db.query('SELECT * FROM contact');
+    const { rows: movie } = await db.query('SELECT * FROM movies');
+    res.send(movie);
   } catch (e) {
-      console.error(e);
-      return res.status(400).json({ e });
+    console.error(e);
+    return res.status(400).json({ e });
   }
 });
 
-const openai = new OpenAI({ apiKey: process.env.openai_key});
-app.post('/api/films/recommendation', async(req,res) => {
-    
-  const completion = await openai.chat.completions.create({
-      messages: [{ role: "system", content: "Please provide 5 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone who is age 40 and likes action movies. " }],
-      model: "gpt-3.5-turbo",
-    });
-  
-    console.log(completion.choices[0]);
-    console.log("Content", completion.choices[0].message.content);
-    res.json((JSON.parse(completion.choices[0].message.content)));
+const openai = new OpenAI({ apiKey: process.env.openai_key });
+app.post('/api/films/recommendation', async (req, res) => {
 
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: "system", content: "Please provide 5 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone who is age 40 and likes action movies. " }],
+    model: "gpt-3.5-turbo",
+  });
+
+  //console.log(completion.choices[0]);
+  //console.log("Content", completion.choices[0].message.content);
+  // res.json((JSON.parse(completion.choices[0].message.content)));
+  const content = JSON.parse(completion.choices[0].message.content);
+  
+  const apiKey= process.env.MovieDB_API_KEY
+  const movieDBResults = content.map((recommendation) => {
+
+    const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      }
+    };
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log("recommendation name", recommendation.name, "json", json))
+      .catch(err => console.error('error:' + err));
+  })
+ res.json({recommendations: movieDBResults  })
 });
+
+
 
 // // create the POST request
 // app.post('/api/students', cors(), async (req, res) => {
