@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react'
-import MovieCard from './MovieCard';
-import {fetchPopular} from '../API';
+import MovieCard from '../MovieCard';
+import {fetchPopular} from '../../API';
 
 
 // import ViewFilm from './ViewFilm'
@@ -19,8 +19,6 @@ const HomePage = () => {
     const fetchMovies = async () => {
       try{
         const response = await fetchPopular()
-          
-
 
         const formattedMovies = response.data.results; 
         setMovies(formattedMovies);

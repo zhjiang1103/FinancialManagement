@@ -1,13 +1,17 @@
 import React from 'react'
 import SearchBar from './SearchBar'
+import { useState, useEffect } from 'react'
 
 const SearchPage = () => {
-//Fetch api
+  const[title, setTitle] = useState([])
+
+  //Fetch api
 //search bar component
 //filtering component
 //movie card
-const onSubmit = (text) =>{
-  console.log(text)
+const onSubmit = (title) =>{
+  setTitle(title)
+  
 }
   
   return (

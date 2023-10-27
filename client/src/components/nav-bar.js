@@ -10,8 +10,7 @@ const NavBar = () => {
     <div className="nav-container mb-3">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <div className="container">
-          <div className="navbar-brand logo" />
-          
+          <div className="navbar-brand logo" /> 
           <Link to = "/search">Search</Link>
           <Link to = "/">Home</Link>
           <Link to = "/recommendation">Recommendation</Link>
