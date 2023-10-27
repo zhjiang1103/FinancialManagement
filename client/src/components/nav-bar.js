@@ -1,7 +1,9 @@
 import React from 'react';
+import { Route, Routes, Link, useParams } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import AuthNav from './auth-nav';
-import PageNav from './PageNav';
+
 
 const NavBar = () => {
   return (
@@ -10,7 +12,9 @@ const NavBar = () => {
         <div className="container">
           <div className="navbar-brand logo" />
           <AuthNav />
-          {/* <PageNav/> */}
+          <p>text</p>
+          <Link to = "/">Popular</Link>
+      
         </div>
       </nav>
     </div>
