@@ -60,13 +60,8 @@ const getMovieInfo = async function (req, res) {
   res.send(movieDBResults);
 }
 
-app.post('/recommendations', [getChat,  getMovieInfo]);
+app.get('/recommendations', [getChat,  getMovieInfo]);
 
-app.get('/test', async (req, res) => {
-  const result = await fetchDB({name: "Titanic", year: 1997})
-  console.log(result)
-  res.send(result)
-})
 
 
 const fetchDB = async (recommendation) => {
