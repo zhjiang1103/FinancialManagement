@@ -1,11 +1,12 @@
 import "./App.css";
 import NavBar from "./components/nav-bar";
-import PopularMovies from "./components/PopularMovies";
+import HomePage from "./components/HomePage";
 
 //import Profile from "./components/profile";
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
 import { Route, Routes, Link } from 'react-router-dom';
+
 
 function App() {
 
@@ -22,7 +23,8 @@ function App() {
       <div className="container flex-grow-1">
       {!user ? <span>Hello from Techtonica From DEV!!!</span> : <span>Hello <Link to="api/me">{user.name}</Link></span> }
       <Routes>
-      <Route path="/" element={<PopularMovies />} />
+      <Route path="/" element={<HomePage />} />
+     
       {/* <Route path="api/me" element={<Profile user={user}/>} /> */}
       </Routes>
       </div>

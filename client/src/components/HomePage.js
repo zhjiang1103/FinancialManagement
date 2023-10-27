@@ -8,7 +8,7 @@ import MovieCard from './MovieCard';
 // import { Route, Routes, Link, useParams } from 'react-router-dom';
 
 
-const PopularMovies = () => {
+const HomePage = () => {
     const [movies, setMovies] = useState([]);
 
   
@@ -53,5 +53,5 @@ const apiKey= process.env.REACT_APP_API_KEY
     )};
   
   
-  export default PopularMovies;
+  export default HomePage;
 
