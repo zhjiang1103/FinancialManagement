@@ -11,10 +11,12 @@ const NavBar = () => {
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <div className="container">
           <div className="navbar-brand logo" />
+          
+          <Link to = "/search">Search</Link>
+          <Link to = "/">Home</Link>
+          <Link to = "/recommendation">Recommendation</Link>
+          <Link to = "/profile">Profile</Link>
           <AuthNav />
-          <p>text</p>
-          <Link to = "/">Popular</Link>
-      
         </div>
       </nav>
     </div>
