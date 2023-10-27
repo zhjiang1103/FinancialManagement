@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react'
-import axios from 'axios';
 import MovieCard from './MovieCard';
+import {fetchPopular} from '../API';
 
 
 // import ViewFilm from './ViewFilm'
@@ -15,18 +15,12 @@ const HomePage = () => {
       // Make the GET request to fetch popular movies
       
   useEffect(() => {
-    const apiUrl = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
-
-   
-const apiKey= process.env.REACT_APP_API_KEY
+    
     const fetchMovies = async () => {
-      try {
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            accept: 'application/json',
-          },
-        });
+      try{
+        const response = await fetchPopular()
+          
+
 
         const formattedMovies = response.data.results; 
         setMovies(formattedMovies);
