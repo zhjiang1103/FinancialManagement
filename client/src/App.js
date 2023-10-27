@@ -1,8 +1,11 @@
 import "./App.css";
 import NavBar from "./components/nav-bar";
 import HomePage from "./components/HomePage";
-
+import SearchPage from "./components/SearchPage";
+import Recommendation from "./components/Recommendation";
+import ProfilePage from "./components/ProfilePage";
 //import Profile from "./components/profile";
+
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
 import { Route, Routes, Link } from 'react-router-dom';
@@ -24,7 +27,9 @@ function App() {
       {!user ? <span>Hello from Techtonica From DEV!!!</span> : <span>Hello <Link to="api/me">{user.name}</Link></span> }
       <Routes>
       <Route path="/" element={<HomePage />} />
-     
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/recommendation" element={<Recommendation />} />
+      <Route path="/profile" element={<ProfilePage />} />
       {/* <Route path="api/me" element={<Profile user={user}/>} /> */}
       </Routes>
       </div>
