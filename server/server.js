@@ -37,37 +37,60 @@ app.get('/api/movies', async (req, res) => {
 });
 
 const openai = new OpenAI({ apiKey: process.env.openai_key });
-app.post('/api/films/recommendation', async (req, res) => {
-
+const getChat = async function (req, res, next) {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: "Please provide 5 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone who is age 40 and likes action movies. " }],
     model: "gpt-3.5-turbo",
   });
-
-  //console.log(completion.choices[0]);
-  //console.log("Content", completion.choices[0].message.content);
-  // res.json((JSON.parse(completion.choices[0].message.content)));
   const content = JSON.parse(completion.choices[0].message.content);
-  
-  const apiKey= process.env.MovieDB_API_KEY
-  const movieDBResults = content.map((recommendation) => {
+  req["ChatGptResult"] = content;
 
-    const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      }
-    };
+  //console.log('CB0');
+  next();
+}
 
-    fetch(url, options)
-      .then(res => res.json())
-      .then(json => console.log("recommendation name", recommendation.name, "json", json))
-      .catch(err => console.error('error:' + err));
-  })
- res.json({recommendations: movieDBResults  })
-});
+
+const getMovieInfo = async function (req, res) {
+  const content = req["ChatGptResult"]
+  let movieDBResults = []
+  for (let recommendation of content) {
+    let movieInfo = await fetchDB(recommendation);
+    movieDBResults.push(movieInfo)
+  }
+  res.send(movieDBResults);
+}
+
+app.post('/recommendations', [getChat,  getMovieInfo]);
+
+app.get('/test', async (req, res) => {
+  const result = await fetchDB({name: "Titanic", year: 1997})
+  console.log(result)
+  res.send(result)
+})
+
+
+const fetchDB = async (recommendation) => {
+  const apiKey = process.env.MovieDB_API_KEY
+  const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    }
+  };
+
+  const json = await fetch(url, options)
+  .then(res => res.json())
+  //.then(json => json)
+  .catch(err => console.error('error:' + err));
+  return json
+
+}
+
+
+
+
 
 
 
