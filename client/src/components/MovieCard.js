@@ -20,14 +20,15 @@ const MovieCard = (props) => {
     // }
 
     // Function to format the release date
-
+    let url = `https://image.tmdb.org/t/p/w500${props.movie.poster_path}`;
 
     return (
         <>
         <div>
          
-            <Card style={{ width: "40%" }}>
+            <Card classname="custom-card">
                 <Card.Body>
+                <Card.Img variant="top" src={url} alt={props.movie.original_title} />
                     <Card.Title>{props.movie.original_title}</Card.Title>
                 </Card.Body>
             
