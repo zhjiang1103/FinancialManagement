@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchBar from './SearchBar'
+import Filtering from './Filtering'
 import { useState, useEffect } from 'react'
 
 const SearchPage = () => {
@@ -18,6 +19,7 @@ const onSubmit = (title) =>{
     <>
     <div>SearchPage</div>
     <div><SearchBar onSubmit={onSubmit}/></div>
+    <div><Filtering/></div>
   </>
   )
 }

@@ -25,7 +25,7 @@ const MovieCard = (props) => {
     return (
         <>
         <div>
-            <p>hello</p>
+         
             <Card style={{ width: "40%" }}>
                 <Card.Body>
                     <Card.Title>{props.movie.original_title}</Card.Title>
