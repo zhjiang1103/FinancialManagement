@@ -11,6 +11,7 @@ const SearchPage = () => {
 //filtering component
 //movie card
 const onSubmit = (title) =>{
+
   setTitle(title)
   
 }
