@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
 });
 
-// create the get request
+// create the get request to connect to DB
 app.get('/api/movies', async (req, res) => {
   try {
     // const { rows: contact } = await db.query('SELECT * FROM contact');
@@ -36,6 +36,7 @@ app.get('/api/movies', async (req, res) => {
   }
 });
 
+//Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
   const completion = await openai.chat.completions.create({
@@ -49,7 +50,7 @@ const getChat = async function (req, res, next) {
   next();
 }
 
-
+//Using the result from chatGPT to fetch movie details from movie DB API
 const getMovieInfo = async function (req, res) {
   const content = req["ChatGptResult"]
   let movieDBResults = []
@@ -63,7 +64,7 @@ const getMovieInfo = async function (req, res) {
 app.get('/recommendations', [getChat,  getMovieInfo]);
 
 
-
+//function to do fetching
 const fetchDB = async (recommendation) => {
   const apiKey = process.env.MovieDB_API_KEY
   const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
