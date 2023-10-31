@@ -3,10 +3,12 @@ import SearchBar from './SearchBar'
 import Filtering from './Filtering'
 import MovieCard from '../MovieCard'
 import { fetchByTitle } from '../../API'
+import { fetchByPerson } from '../../API'
 import { useState, useEffect } from 'react'
 
 const SearchPage = () => {
-  const [title, setTitle] = useState([])
+  const [searchWord, setSearchWord] = useState('')
+ // const [person,setPerson] = useState([])
   const [movies, setMovies] = useState([])
   const [selectedSearch, setSelectedSearch] = useState(''); // State to store the selected search value
 
@@ -15,21 +17,28 @@ const SearchPage = () => {
     setSelectedSearch(event.target.value);
    
   };
-  useEffect(() => {
-    // Log the updated selectedSearch in the console
-    console.log(selectedSearch);
-  }, [selectedSearch]); // This effect runs when selectedSearch changes
+  // useEffect(() => {
+  //   // Log the updated selectedSearch in the console
+  //   console.log(selectedSearch);
+  // }, [selectedSearch]); // This effect runs when selectedSearch changes
 
 
   //Fetch api
   //search bar component
   //filtering component
   //movie card
-  const onSubmit = (searchTitle) => {
-    setTitle(searchTitle)
-    console.log("title", title)
-    fetchMoviesByTitle(title)
+  const onSubmit = (searchWord) => {
+    setSearchWord(searchWord)
+    console.log("Searchword", searchWord)
+    if (selectedSearch === "title"){fetchMoviesByTitle(searchWord)}
+    else if (selectedSearch === "person"){fetchMoviesByPerson(searchWord)}
+   
   }
+  // const onSubmit = (searchPerson) => {
+  //     setPerson(searchPerson)
+  //     console.log("person", person)
+  //     fetchMoviesByPerson(person)
+  // }
 
   const fetchMoviesByTitle = async (title) => {
     try {
@@ -44,8 +53,25 @@ const SearchPage = () => {
   };
   useEffect(() => {
     fetchMoviesByTitle()
-  }, [title]) // Call the fetchMoviesByTitle function
-  // The empty dependency array ensures the effect runs once
+  }, [searchWord]) // Call the fetchMoviesByTitle function
+ // The title dependency array ensures the effect runs when title changes
+
+  
+  const fetchMoviesByPerson = async (person) => {
+    try {
+      const response = await fetchByPerson(person)
+
+      const formattedMovies = response.data.results;
+      setMovies(formattedMovies[0].known_for);
+     console.log("formattedMovies", formattedMovies[0].known_for) // Log the formatted movies
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    }
+  };
+  useEffect(() => {
+    fetchMoviesByPerson()
+  }, [searchWord]) // Call the fetchMoviesByPerson function
+  // The title dependency array ensures the effect runs when person changes
 
 
   return (

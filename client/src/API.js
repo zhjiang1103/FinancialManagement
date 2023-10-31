@@ -29,3 +29,15 @@ export function fetchByTitle(title){
     })
 }
 
+//Search for movies by their original, translated and alternative titles.
+export function fetchByPerson(person){
+    const apiUrl = `https://api.themoviedb.org/3/search/person?query=${person}&include_adult=false&language=en-US&page=1`;
+    const apiKey = process.env.REACT_APP_API_KEY
+    
+    return axios.get(apiUrl, {
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            accept: 'application/json',
+        }
+    })
+}
