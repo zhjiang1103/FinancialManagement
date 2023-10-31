@@ -10,10 +10,10 @@ const SearchBar = (props) => {
 
     return (
         <>
-            <div>SearchBar</div>
+           
             <form onSubmit={handleSubmit}>
 
-                <input
+                <input 
                     type="text"
                     name="search"
                     id="add-user-name"

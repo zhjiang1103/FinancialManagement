@@ -8,14 +8,14 @@ import { useState, useEffect } from 'react'
 
 const SearchPage = () => {
   const [searchWord, setSearchWord] = useState('')
- // const [person,setPerson] = useState([])
+  // const [person,setPerson] = useState([])
   const [movies, setMovies] = useState([])
   const [selectedSearch, setSelectedSearch] = useState(''); // State to store the selected search value
 
   const handleDropdownChange = (event) => {
     // Update the state with the selected value
     setSelectedSearch(event.target.value);
-   
+
   };
   // useEffect(() => {
   //   // Log the updated selectedSearch in the console
@@ -30,9 +30,9 @@ const SearchPage = () => {
   const onSubmit = (searchWord) => {
     setSearchWord(searchWord)
     console.log("Searchword", searchWord)
-    if (selectedSearch === "title"){fetchMoviesByTitle(searchWord)}
-    else if (selectedSearch === "person"){fetchMoviesByPerson(searchWord)}
-   
+    if (selectedSearch === "title") { fetchMoviesByTitle(searchWord) }
+    else if (selectedSearch === "person") { fetchMoviesByPerson(searchWord) }
+
   }
   // const onSubmit = (searchPerson) => {
   //     setPerson(searchPerson)
@@ -54,16 +54,16 @@ const SearchPage = () => {
   useEffect(() => {
     fetchMoviesByTitle()
   }, [searchWord]) // Call the fetchMoviesByTitle function
- // The title dependency array ensures the effect runs when title changes
+  // The title dependency array ensures the effect runs when title changes
 
-  
+
   const fetchMoviesByPerson = async (person) => {
     try {
       const response = await fetchByPerson(person)
 
       const formattedMovies = response.data.results;
       setMovies(formattedMovies[0].known_for);
-     console.log("formattedMovies", formattedMovies[0].known_for) // Log the formatted movies
+      console.log("formattedMovies", formattedMovies[0].known_for) // Log the formatted movies
     } catch (error) {
       console.error('Error fetching movies:', error);
     }
@@ -77,8 +77,8 @@ const SearchPage = () => {
   return (
     <>
       <div>SearchPage</div>
-   
-      <div>
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {/* Dropdown component */}
         <select value={selectedSearch} onChange={handleDropdownChange}>
           <option value="">Search By</option>
@@ -86,9 +86,10 @@ const SearchPage = () => {
           <option value="person">Person</option>
           {/* Add more categories as needed */}
         </select>
-      </div>
 
-      <div><SearchBar onSubmit={onSubmit} /></div>
+
+        <SearchBar onSubmit={onSubmit}  />
+      </div>
       <div><Filtering /></div>
       <div>
         <ul>
