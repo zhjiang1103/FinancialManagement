@@ -3,7 +3,7 @@ import NavBar from "./components/nav-bar";
 import HomePage from "./components/HomePage/HomePage";
 import SearchPage from "./components/SearchPage/SearchPage";
 import Recommendation from "./components/RecomPage/Recommendation";
-import ProfilePage from "./components/ProfilePage/ProfilePage";
+
 import Profile from "./components/profile";
 
 import { useAuth0 } from '@auth0/auth0-react';
