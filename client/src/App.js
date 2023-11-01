@@ -4,7 +4,7 @@ import HomePage from "./components/HomePage/HomePage";
 import SearchPage from "./components/SearchPage/SearchPage";
 import Recommendation from "./components/RecomPage/Recommendation";
 
-import Profile from "./components/profile";
+import Profile from "./components/ProfilePage/profile";
 
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
