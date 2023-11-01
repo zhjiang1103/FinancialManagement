@@ -1,5 +1,11 @@
 .App {
+  
   text-align: center;
+}
+
+#app{
+  background-color: #131313 !important;
+  color:#f8f8f8;
 }
 
 .App-logo {
@@ -36,3 +42,27 @@
     transform: rotate(360deg);
   }
 }
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movie-card {
+  background-color: #131313;
+  color: #f8f8f8;
+  width: 25%;
+  padding: 10px;
+  height: 360px; 
+  box-sizing: border-box;
+}
+
+.card{
+  background-color: #131313 !important;
+  color: #f8f8f8 !important;
+}
+
+ul {
+  list-style: none; /* Removes bullet points */
+}
+
