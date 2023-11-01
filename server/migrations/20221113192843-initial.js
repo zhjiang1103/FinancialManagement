@@ -5,12 +5,8 @@ var seed;
 var fs = require('fs');
 var path = require('path');
 var Promise;
-import { fileURLToPath } from 'url';
 
 
-// Needed it for ES6 modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename)
 
 /**
   * We receive the dbmigrate dependency from dbmigrate initially.

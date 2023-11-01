@@ -56,23 +56,23 @@ ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
 
 
 --
--- Name: students; Type: TABLE; Schema: public; Owner: postgres
+-- Name: movies; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.students (
+CREATE TABLE public.movies (
     id integer NOT NULL,
-    lastname character varying(255),
-    firstname character varying(255)
+    name character varying(255),
+    api_id integer 
 );
 
 
-ALTER TABLE public.students OWNER TO postgres;
+ALTER TABLE public.movies OWNER TO postgres;
 
 --
--- Name: students_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: movies_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.students_id_seq
+CREATE SEQUENCE public.movies_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -81,13 +81,13 @@ CREATE SEQUENCE public.students_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.students_id_seq OWNER TO postgres;
+ALTER TABLE public.movies_id_seq OWNER TO postgres;
 
 --
--- Name: students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: movies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.students_id_seq OWNED BY public.students.id;
+ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
 
 
 --
@@ -99,8 +99,9 @@ CREATE TABLE public.users (
     lastname character varying(255),
     firstname character varying(255),
     email character varying(255),
-    sub character varying(255)
-);
+)
+--     sub character varying(255)
+
 
 
 ALTER TABLE public.users OWNER TO postgres;
@@ -126,6 +127,17 @@ ALTER TABLE public.users_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
+CREATE TABLE public.favorite (
+    user_id integer,
+    movie_id integer,
+   
+)
+--     sub character varying(255)
+
+
+
+ALTER TABLE public.favorite OWNER TO postgres;
+
 
 --
 -- Name: migrations id; Type: DEFAULT; Schema: public; Owner: postgres
@@ -138,7 +150,7 @@ ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.m
 -- Name: students id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.students ALTER COLUMN id SET DEFAULT nextval('public.students_id_seq'::regclass);
+ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movies_id_seq'::regclass);
 
 
 --
@@ -156,21 +168,11 @@ INSERT INTO public.migrations (id, name, run_on) VALUES (1, '/20221113192843-ini
 
 
 --
--- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.students (id, lastname, firstname) VALUES (1, 'Gomez', 'Andrea');
-INSERT INTO public.students (id, lastname, firstname) VALUES (2, 'Lee', 'Becca');
-INSERT INTO public.students (id, lastname, firstname) VALUES (3, 'Smith', 'Will');
-INSERT INTO public.students (id, lastname, firstname) VALUES (4, 'Pond', 'Kate');
-INSERT INTO public.students (id, lastname, firstname) VALUES (5, 'Lasso', 'Jamie');
-INSERT INTO public.students (id, lastname, firstname) VALUES (7, 'Rodriguez', 'Arepa');
-INSERT INTO public.students (id, lastname, firstname) VALUES (8, 'Smith', 'Crush');
-INSERT INTO public.students (id, lastname, firstname) VALUES (9, 'Fonca', 'Billy');
-INSERT INTO public.students (id, lastname, firstname) VALUES (10, 'Gomez', 'Teresa');
-INSERT INTO public.students (id, lastname, firstname) VALUES (11, 'Tres', 'Prueba');
-INSERT INTO public.students (id, lastname, firstname) VALUES (12, 'Cuatro', 'Prueba');
-INSERT INTO public.students (id, lastname, firstname) VALUES (13, 'Cinco', 'Prueba');
+INSERT INTO public.movies (id, name, api_id) VALUES (1, 'Saw X',951491);
+
 
 
 --
@@ -190,7 +192,7 @@ SELECT pg_catalog.setval('public.migrations_id_seq', 1, true);
 -- Name: students_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.students_id_seq', 16, true);
+SELECT pg_catalog.setval('public.movies_id_seq', 1, true);
 
 
 --
@@ -212,8 +214,8 @@ ALTER TABLE ONLY public.migrations
 -- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.students
-    ADD CONSTRAINT students_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.movies
+    ADD CONSTRAINT movies_pkey PRIMARY KEY (id);
 
 
 --
