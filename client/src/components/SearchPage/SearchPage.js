@@ -76,7 +76,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <div>SearchPage</div>
+      
 
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {/* Dropdown component */}

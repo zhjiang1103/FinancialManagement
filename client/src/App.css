@@ -66,3 +66,18 @@ ul {
   list-style: none; /* Removes bullet points */
 }
 
+.RecomMessage {
+  text-align: center; /* Center-align the content within the div */
+}
+
+.RecomMessage span {
+  display: block; /* Make the span a block-level element to force it onto a new line */
+  margin: 0 auto; /* Center the span horizontally */
+}
+
+.RecomMessage img {
+  display: block; /* Make the image a block-level element to force it onto a new line */
+  margin: 10px auto; /* Center the image horizontally with some spacing */
+}
+
+
