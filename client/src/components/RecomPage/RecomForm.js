@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button, Form} from "react-bootstrap"
+import {Button, Form, Dropdown} from "react-bootstrap"
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 const RecomForm = () => {
 
@@ -17,8 +18,8 @@ const handleAddForm = () =>{}
                 <Form.Label>Tell me what is your purpose of watching a movie?</Form.Label>
                 <input
                     type="text"
-                    id="add-user-name"
-                    placeholder="Name"
+                    id="add-user-purpose"
+                    placeholder="purpose"
                     required
                  
                 //onChange={handleAddFilm}
@@ -27,7 +28,7 @@ const handleAddForm = () =>{}
            
             <Form.Group>
                 <Button type="submit" variant="outline-success">
-                    Add Film
+                    Get Recommendation
                 </Button>
 
             </Form.Group>
