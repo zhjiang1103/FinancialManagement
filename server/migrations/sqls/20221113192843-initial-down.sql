@@ -1,4 +1,5 @@
 /* Replace with your SQL commands */
 
-DROP TABLE students;
+DROP TABLE movies;
 DROP TABLE users;
+DROP TABLE favorite;

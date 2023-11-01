@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.3
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 15.4
+-- Dumped by pg_dump version 15.4 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,23 +21,35 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
+-- Name: favorite; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE TABLE public.migrations (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    run_on timestamp without time zone NOT NULL
+CREATE TABLE public.favorite (
+    user_id integer,
+    movie_id integer
 );
 
 
-ALTER TABLE public.migrations OWNER TO postgres;
+ALTER TABLE public.favorite OWNER TO tpl1222_1;
 
 --
--- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: movies; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE SEQUENCE public.migrations_id_seq
+CREATE TABLE public.movies (
+    id integer NOT NULL,
+    name character varying(255),
+    api_id integer
+);
+
+
+ALTER TABLE public.movies OWNER TO tpl1222_1;
+
+--
+-- Name: movies_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+--
+
+CREATE SEQUENCE public.movies_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -46,67 +58,31 @@ CREATE SEQUENCE public.migrations_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.migrations_id_seq OWNER TO postgres;
+ALTER TABLE public.movies_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: movies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
-ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
-
-
---
--- Name: students; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.students (
-    id integer NOT NULL,
-    lastname character varying(255),
-    firstname character varying(255)
-);
-
-
-ALTER TABLE public.students OWNER TO postgres;
-
---
--- Name: students_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.students_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.students_id_seq OWNER TO postgres;
-
---
--- Name: students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.students_id_seq OWNED BY public.students.id;
+ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
+-- Name: users; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
 CREATE TABLE public.users (
     id integer NOT NULL,
     lastname character varying(255),
     firstname character varying(255),
-    email character varying(255),
-    sub character varying(255)
+    email character varying(255)
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
+ALTER TABLE public.users OWNER TO tpl1222_1;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -118,110 +94,100 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO postgres;
+ALTER TABLE public.users_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: migrations id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: movies id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
-
-
---
--- Name: students id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.students ALTER COLUMN id SET DEFAULT nextval('public.students_id_seq'::regclass);
+ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movies_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: favorite; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-INSERT INTO public.migrations (id, name, run_on) VALUES (1, '/20221113192843-initial', '2022-11-13 11:55:53.414');
-
-
---
--- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.students (id, lastname, firstname) VALUES (1, 'Gomez', 'Andrea');
-INSERT INTO public.students (id, lastname, firstname) VALUES (2, 'Lee', 'Becca');
-INSERT INTO public.students (id, lastname, firstname) VALUES (3, 'Smith', 'Will');
-INSERT INTO public.students (id, lastname, firstname) VALUES (4, 'Pond', 'Kate');
-INSERT INTO public.students (id, lastname, firstname) VALUES (5, 'Lasso', 'Jamie');
-INSERT INTO public.students (id, lastname, firstname) VALUES (7, 'Rodriguez', 'Arepa');
-INSERT INTO public.students (id, lastname, firstname) VALUES (8, 'Smith', 'Crush');
-INSERT INTO public.students (id, lastname, firstname) VALUES (9, 'Fonca', 'Billy');
-INSERT INTO public.students (id, lastname, firstname) VALUES (10, 'Gomez', 'Teresa');
-INSERT INTO public.students (id, lastname, firstname) VALUES (11, 'Tres', 'Prueba');
-INSERT INTO public.students (id, lastname, firstname) VALUES (12, 'Cuatro', 'Prueba');
-INSERT INTO public.students (id, lastname, firstname) VALUES (13, 'Cinco', 'Prueba');
+COPY public.favorite (user_id, movie_id) FROM stdin;
+1	1
+\.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-
-
---
--- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.migrations_id_seq', 1, true);
+COPY public.movies (id, name, api_id) FROM stdin;
+1	Saw X	951491
+\.
 
 
 --
--- Name: students_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.students_id_seq', 16, true);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+COPY public.users (id, lastname, firstname, email) FROM stdin;
+1	Wong	Steven	stevenWong@gmail.com
+\.
 
 
 --
--- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: movies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.migrations
-    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
-
-
---
--- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.students
-    ADD CONSTRAINT students_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.movies_id_seq', 1, true);
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+
+
+--
+-- Name: movies movies_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.movies
+    ADD CONSTRAINT movies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorite favorite_movie_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.favorite
+    ADD CONSTRAINT favorite_movie_id_fkey FOREIGN KEY (movie_id) REFERENCES public.movies(id);
+
+
+--
+-- Name: favorite favorite_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.favorite
+    ADD CONSTRAINT favorite_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

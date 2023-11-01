@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import RecomForm from './RecomForm'
 import axios from 'axios';
+import MovieCard from '../MovieCard';
 
 const Recommendation = () => {
 
@@ -21,12 +22,18 @@ const Recommendation = () => {
       <div>
         <RecomForm />
       </div>
+
       <h1>Recommendated Movie List</h1>
       <ul>
-        {RecomData.map((item) => (
-          <li key={item.results[0].id}>{item.results[0].original_title}</li>
-        ))}
+        <div className="movie-list">
+          {RecomData.map((movie) => (
+             <div className="movie-card">
+            <li key={movie.results[0].id}><MovieCard movie={movie.results[0]} /></li>
+            </div>
+          ))}
+        </div>
       </ul>
+
     </div>
   );
 };

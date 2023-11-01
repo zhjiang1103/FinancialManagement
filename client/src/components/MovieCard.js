@@ -26,10 +26,10 @@ const MovieCard = (props) => {
         <>
         <div>
          
-            <Card classname="custom-card">
+            <Card>
                 <Card.Body>
-                <Card.Img variant="top" src={url} alt={props.movie.original_title} />
-                    <Card.Title>{props.movie.original_title}</Card.Title>
+                <Card.Img variant="top" src={url} alt={props.movie.title} />
+                    <Card.Title>{props.movie.title}</Card.Title>
                 </Card.Body>
             
             </Card>

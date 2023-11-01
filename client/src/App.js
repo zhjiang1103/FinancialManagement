@@ -4,7 +4,7 @@ import HomePage from "./components/HomePage/HomePage";
 import SearchPage from "./components/SearchPage/SearchPage";
 import Recommendation from "./components/RecomPage/Recommendation";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
-//import Profile from "./components/profile";
+import Profile from "./components/profile";
 
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
@@ -24,12 +24,12 @@ function App() {
       <NavBar />
      
       <div className="container flex-grow-1">
-      {!user ? <span>Hello from Techtonica From DEV!!!</span> : <span>Hello <Link to="api/me">{user.name}</Link></span> }
+      {!user ? <span>Hello from Cinenova!!!</span> : <span>Hello <Link to="profile">{user.name}</Link></span> }
       <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/recommendation" element={<Recommendation />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/profile" element={<Profile user={user}/>} />
       {/* <Route path="api/me" element={<Profile user={user}/>} /> */}
       </Routes>
       </div>
