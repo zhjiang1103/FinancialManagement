@@ -41,3 +41,15 @@ export function fetchByPerson(person){
         }
     })
 }
+
+export function fetchByID(ID){
+    const apiUrl = `https://api.themoviedb.org/3/movie/${ID}?language=en-US`;
+    const apiKey = process.env.REACT_APP_API_KEY
+    
+    return axios.get(apiUrl, {
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            accept: 'application/json',
+        }
+    })
+}

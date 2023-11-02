@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+
 //import moment from 'moment';
 //import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,8 @@ import { Link } from 'react-router-dom';
 
 //const ViewContact = ({contact, toUpdate, toDelete})
 const MovieCard = (props) => {
-
+ let movie = props.movie
+ console.log("props passing", movie)
 
     // const onUpdate = (toUpdateContact) => {
     //     toUpdate(toUpdateContact)

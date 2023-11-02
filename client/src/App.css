@@ -62,7 +62,7 @@
   color: #f8f8f8 !important;
 }
 
-ul {
+ul,li {
   list-style: none; /* Removes bullet points */
 }
 
@@ -80,4 +80,17 @@ ul {
   margin: 10px auto; /* Center the image horizontally with some spacing */
 }
 
+.movie-category{
+  display: flex;
+  flex-wrap: wrap;
+}
+.genres {
+  margin-right: 10px; /* Adjust the right margin for spacing between genres */
+}
+.category-label {
+  margin-right: 10px; /* Add space between the label and genres */
+}
 
+.new-line-description {
+  display: block;
+}

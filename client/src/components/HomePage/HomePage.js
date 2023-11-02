@@ -40,7 +40,7 @@ const HomePage = () => {
         <div className="movie-list">
           {movies.map(movie => (
             <div className="movie-card">
-              <li key={movie.id}><MovieCard movie={movie} /></li>
+              <li key={movie.id}><MovieCard movie={movie}/></li>
             </div>
           ))}
         </div>
