@@ -36,6 +36,22 @@ app.get('/api/movies', async (req, res) => {
   }
 });
 
+//Create post request to connect to DB
+app.post('/api/users', cors(), async (req, res) => {
+const newUser = {
+lastname: req.body.lastname,
+firstname: req.body.firstname,
+email: req.body.email,
+};
+console.log([newUser.lastname, newUser.firstname, newUser.email]);
+const result = await db.query(
+'INSERT INTO users(lastname, firstname, email) VALUES($1, $2, $3) RETURNING *',
+[newUser.firstname, newUser.lastname, newUser.email],
+);
+console.log(result.rows[0]);
+res.json(result.rows[0]);
+});
+
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
