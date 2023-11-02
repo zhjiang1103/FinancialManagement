@@ -3,7 +3,7 @@ import NavBar from "./components/nav-bar";
 import HomePage from "./components/HomePage/HomePage";
 import SearchPage from "./components/SearchPage/SearchPage";
 import Recommendation from "./components/RecomPage/Recommendation";
-
+import MovieDetail from "./components/MovieDetail";
 import Profile from "./components/ProfilePage/profile";
 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -27,6 +27,7 @@ function App() {
       {!user ? <span>Hello from Cinenova!!!</span> : <span>Hello <Link to="profile">{user.name}</Link></span> }
       <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/movies/:id" element={<MovieDetail />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/recommendation" element={<Recommendation />} />
       <Route path="/profile" element={<Profile user={user}/>} />

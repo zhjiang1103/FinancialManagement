@@ -1,8 +1,8 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 //import moment from 'moment';
-import Button from 'react-bootstrap/Button';
-//import { Route, Routes, Link, useParams } from 'react-router-dom';
+//import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 //import FilmDetail from './FilmDetail';
 
 
@@ -24,17 +24,23 @@ const MovieCard = (props) => {
 
     return (
         <>
-        <div>
-         
+
+
             <Card>
                 <Card.Body>
-                <Card.Img variant="top" src={url} alt={props.movie.title} />
+                    <Link to={`/movies/${props.movie.id}`}>
+                        <Card.Img variant="top" src={url} alt={props.movie.title} />
+                    </Link>
                     <Card.Title>{props.movie.title}</Card.Title>
+                    {/* <Link to={`/movies/${props.movie.id}`}>
+                        <Button variant="outline-info" style={{ padding: '0.6em' }}>Movie Details</Button>
+                    </Link> */}
+
                 </Card.Body>
-            
+
             </Card>
-        </div>
-             
+
+
 
         </>
     )
