@@ -36,7 +36,7 @@ app.get('/api/movies', async (req, res) => {
   }
 });
 
-//Create post request to connect to DB
+//Create post request to connect to DB, adding new user
 app.post('/api/users', cors(), async (req, res) => {
 const newUser = {
 lastname: req.body.lastname,
@@ -44,13 +44,27 @@ firstname: req.body.firstname,
 email: req.body.email,
 };
 console.log([newUser.lastname, newUser.firstname, newUser.email]);
-const result = await db.query(
-'INSERT INTO users(lastname, firstname, email) VALUES($1, $2, $3) RETURNING *',
-[newUser.firstname, newUser.lastname, newUser.email],
+ // Check if the email already exists in the database
+ const emailCheck = await db.query(
+  'SELECT * FROM users WHERE email = $1',
+  [newUser.email]
 );
-console.log(result.rows[0]);
-res.json(result.rows[0]);
+
+if (emailCheck.rows.length > 0) {
+  // Email already exists, you can send a response or handle it as needed
+  res.status(409).json({ error: 'User already exists' });
+} else {
+  // Email is unique, proceed with the insertion
+  const result = await db.query(
+    'INSERT INTO users(lastname, firstname, email) VALUES($1, $2, $3) RETURNING *',
+    [newUser.lastname, newUser.firstname, newUser.email]
+  );
+  console.log(result.rows[0]);
+  res.json(result.rows[0]);
+}
 });
+
+
 
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
