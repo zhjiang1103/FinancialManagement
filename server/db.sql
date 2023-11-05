@@ -21,16 +21,39 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: favorite; Type: TABLE; Schema: public; Owner: tpl1222_1
+-- Name: fav; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE TABLE public.favorite (
-    user_id integer,
+CREATE TABLE public.fav (
+    id integer NOT NULL,
+    user_email character varying(255),
     movie_id integer
 );
 
 
-ALTER TABLE public.favorite OWNER TO tpl1222_1;
+ALTER TABLE public.fav OWNER TO tpl1222_1;
+
+--
+-- Name: fav_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+--
+
+CREATE SEQUENCE public.fav_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fav_id_seq OWNER TO tpl1222_1;
+
+--
+-- Name: fav_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+--
+
+ALTER SEQUENCE public.fav_id_seq OWNED BY public.fav.id;
+
 
 --
 -- Name: movies; Type: TABLE; Schema: public; Owner: tpl1222_1
@@ -104,6 +127,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: fav id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.fav ALTER COLUMN id SET DEFAULT nextval('public.fav_id_seq'::regclass);
+
+
+--
 -- Name: movies id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
@@ -118,11 +148,10 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- Data for Name: favorite; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+-- Data for Name: fav; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.favorite (user_id, movie_id) FROM stdin;
-1	1
+COPY public.fav (id, user_email, movie_id) FROM stdin;
 \.
 
 
@@ -141,7 +170,15 @@ COPY public.movies (id, name, api_id) FROM stdin;
 
 COPY public.users (id, lastname, firstname, email) FROM stdin;
 1	Wong	Steven	stevenWong@gmail.com
+4	Jiang	Janet	janetjiang1103@gmail.com
 \.
+
+
+--
+-- Name: fav_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+--
+
+SELECT pg_catalog.setval('public.fav_id_seq', 1, false);
 
 
 --
@@ -155,7 +192,15 @@ SELECT pg_catalog.setval('public.movies_id_seq', 1, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
+
+
+--
+-- Name: fav fav_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.fav
+    ADD CONSTRAINT fav_pkey PRIMARY KEY (id);
 
 
 --
@@ -172,22 +217,6 @@ ALTER TABLE ONLY public.movies
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: favorite favorite_movie_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
---
-
-ALTER TABLE ONLY public.favorite
-    ADD CONSTRAINT favorite_movie_id_fkey FOREIGN KEY (movie_id) REFERENCES public.movies(id);
-
-
---
--- Name: favorite favorite_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
---
-
-ALTER TABLE ONLY public.favorite
-    ADD CONSTRAINT favorite_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

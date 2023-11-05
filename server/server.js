@@ -38,33 +38,69 @@ app.get('/api/movies', async (req, res) => {
 
 //Create post request to connect to DB, adding new user
 app.post('/api/users', cors(), async (req, res) => {
-const newUser = {
-lastname: req.body.lastname,
-firstname: req.body.firstname,
-email: req.body.email,
-};
-console.log([newUser.lastname, newUser.firstname, newUser.email]);
- // Check if the email already exists in the database
- const emailCheck = await db.query(
-  'SELECT * FROM users WHERE email = $1',
-  [newUser.email]
-);
+  const newUser = {
+    lastname: req.body.lastname,
+    firstname: req.body.firstname,
+    email: req.body.email,
+  };
+  console.log([newUser.lastname, newUser.firstname, newUser.email]);
+  // Check if the email already exists in the database
+  const emailCheck = await db.query(
+    'SELECT * FROM users WHERE email = $1',
+    [newUser.email]
+  );
 
-if (emailCheck.rows.length > 0) {
-  // Email already exists, you can send a response or handle it as needed
-  res.status(409).json({ error: 'User already exists' });
-} else {
-  // Email is unique, proceed with the insertion
+  if (emailCheck.rows.length > 0) {
+    // Email already exists, you can send a response or handle it as needed
+    console.log(`Thank you ${emailCheck.rows[0].firstname} for comming back`)
+    res.status(409).json({ error: 'Email already exists' });
+  } else {
+    // Email is unique, proceed with the insertion
+    const result = await db.query(
+      'INSERT INTO users(lastname, firstname, email) VALUES($1, $2, $3) RETURNING *',
+      [newUser.lastname, newUser.firstname, newUser.email]
+    );
+    console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  }
+});
+
+//Create post request to connect to DB, adding new fav
+app.post('/api/fav', cors(), async (req, res) => {
+  console.log(req.body)
+
+  //console.log([req.body.email, req.body.api_id]);
+
   const result = await db.query(
-    'INSERT INTO users(lastname, firstname, email) VALUES($1, $2, $3) RETURNING *',
-    [newUser.lastname, newUser.firstname, newUser.email]
+    'INSERT INTO fav (user_email, movie_id) VALUES($1, $2) RETURNING *',
+    [req.body.user_email, req.body.movie_id]
   );
   console.log(result.rows[0]);
   res.json(result.rows[0]);
 }
-});
+);
+
+app.delete('/api/fav', cors(), async (req, res) => {
+
+  await db.query('DELETE FROM fav WHERE user_email = $1 and movie_id = $2', [req.query.user_email, req.query.movie_id]);
+  res.status(200).end();
+})
+
+app.get('/api/fav', async (req, res) => {
+  const favCheck = await db.query(
+    'SELECT * FROM fav WHERE user_email = $1 and movie_id = $2',
+    [req.query.user_email, req.query.movie_id]
+  );
 
 
+  if (favCheck.rows.length > 0) {
+    // fav already exists, you can send a response or handle it as needed
+    res.json({ isFav: true })
+
+  } else {
+    res.json({ isFav: false })
+  }
+})
 
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
@@ -91,7 +127,7 @@ const getMovieInfo = async function (req, res) {
   res.send(movieDBResults);
 }
 
-app.get('/recommendations', [getChat,  getMovieInfo]);
+app.get('/recommendations', [getChat, getMovieInfo]);
 
 
 //function to do fetching
@@ -107,9 +143,9 @@ const fetchDB = async (recommendation) => {
   };
 
   const json = await fetch(url, options)
-  .then(res => res.json())
-  //.then(json => json)
-  .catch(err => console.error('error:' + err));
+    .then(res => res.json())
+    //.then(json => json)
+    .catch(err => console.error('error:' + err));
   return json
 
 }
@@ -119,21 +155,6 @@ const fetchDB = async (recommendation) => {
 
 
 
-
-// // create the POST request
-// app.post('/api/students', cors(), async (req, res) => {
-// const newUser = {
-// firstname: req.body.firstname,
-// lastname: req.body.lastname,
-// };
-// console.log([newUser.firstname, newUser.lastname]);
-// const result = await db.query(
-// 'INSERT INTO students(firstname, lastname) VALUES($1, $2) RETURNING *',
-// [newUser.firstname, newUser.lastname],
-// );
-// console.log(result.rows[0]);
-// res.json(result.rows[0]);
-// });
 
 // //A put request - Update a student 
 // app.put('/api/students/:studentId', cors(), async (req, res) =>{
@@ -167,37 +188,7 @@ const fetchDB = async (recommendation) => {
 // });
 
 
-// // create the POST request for a new user
-// // CREATE TABLE users (
-// // 	ID SERIAL PRIMARY KEY,
-// // 	lastname varchar(255),
-// // 	firstname varchar(255),
-// //     email varchar(255), 
-// //     sub varchar(255));
-// app.post('/api/me', cors(), async (req, res) => {
-//   const newUser = {
-//     lastname: req.body.family_name,
-//     firstname: req.body.given_name,
-//     email: req.body.email,
-//     sub: req.body.sub
 
-//   }
-//   //console.log(newUser);
-
-//   const queryEmail = 'SELECT * FROM users WHERE email=$1 LIMIT 1';
-//   const valuesEmail = [newUser.email]
-//   const resultsEmail = await db.query(queryEmail, valuesEmail);
-//   if(resultsEmail.rows[0]){
-//     console.log(`Thank you ${resultsEmail.rows[0].firstname} for comming back`)
-//   } else{
-//   const query = 'INSERT INTO users(lastname, firstname, email, sub) VALUES($1, $2, $3, $4) RETURNING *'
-//   const values = [newUser.lastname, newUser.firstname, newUser.email, newUser.sub]
-//   const result = await db.query(query, values);
-//   console.log(result.rows[0]);
-
-//   }
-
-// });
 
 
 

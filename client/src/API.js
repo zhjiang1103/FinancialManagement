@@ -53,3 +53,18 @@ export function fetchByID(ID){
         }
     })
 }
+
+export function fetchFavDB(user_email, movie_id){
+    const apiUrl = "http://localhost:8080/api/fav";
+    return axios.get(apiUrl, {params: {user_email,movie_id}})
+}
+
+export function fetchFavPost(user_email, movie_id){
+    const apiUrl = "http://localhost:8080/api/fav";
+    return axios.post(apiUrl, {user_email,movie_id})
+}
+
+export function fetchFavDelete(user_email, movie_id){
+    const apiUrl = "http://localhost:8080/api/fav";
+    return axios.delete(apiUrl, {params: {user_email,movie_id}})
+}

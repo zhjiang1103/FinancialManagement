@@ -2,12 +2,14 @@ import React from 'react'
 import Card from 'react-bootstrap/Card';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { fetchByID } from '../API';
+import { fetchByID,fetchFavDB,fetchFavPost, fetchFavDelete } from '../API';
+
 import Heart from 'react-animated-heart';
 
 
-const MovieDetail = () => {
+const MovieDetail = (props) => {
   const { id } = useParams();
+  console.log("user", props.user)
   
   const [isFavourite, setIsFavourite] = useState('false');
   const [movie, setMovie] = useState({});
@@ -16,6 +18,12 @@ const MovieDetail = () => {
 
   const handleToggleFavourite = () => {
     setIsFavourite(!isFavourite);
+    if(isFavourite){
+      fetchFavDelete(props.user.email, id)
+    }
+    else{
+      fetchFavPost(props.user.email, id)
+    }
   };
 
   useEffect(() => {
@@ -36,14 +44,28 @@ const MovieDetail = () => {
 
     fetchMovieByID(); // Call the fetchMovies function
 
+    const fetchFav = async() =>{
+      try {
+        const response = await fetchFavDB(props.user.email, id)
 
-  }, [id]); // The empty dependency array ensures the effect runs once
+       
+     
+        setIsFavourite(response.data.isFav);
+        console.log(response.data.isFav); // Log the formatted movies
+        
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+    if(props.user?.email){fetchFav()};
+    }
+, [id, props.user?.email]); // The empty dependency array ensures the effect runs once
 
   let url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   console.log("movie", movie)
   let genres = movie.genres || [];
 
- console.log(componentHasFetchedData)
+ //console.log(componentHasFetchedData)
   if(!componentHasFetchedData) {
     return (<div> Loading ... </div>)
   }
