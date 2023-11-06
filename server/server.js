@@ -102,6 +102,17 @@ app.get('/api/fav', async (req, res) => {
   }
 })
 
+// create the get request to fetch user's fav movies
+app.get('/api/movies', async (req, res) => {
+  try {
+    const { rows: movie } = await db.query('SELECT * FROM fav WHERE user_email = $1');
+    res.send(movie);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json({ e });
+  }
+});
+
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
