@@ -11,8 +11,8 @@ const fetch = require('node-fetch');
 
 const app = express();
 ///Users/cristina/src/2022H2TemplateFinal/client/build
-const REACT_BUILD_DIR = path.join(__dirname, '..', 'client', 'build');
-app.use(express.static(REACT_BUILD_DIR));
+//const REACT_BUILD_DIR = path.join(__dirname, '..', 'client', 'build');
+//app.use(express.static(REACT_BUILD_DIR));
 
 const PORT = process.env.PORT || 8080;
 app.use(cors());
@@ -20,8 +20,8 @@ app.use(express.json());
 
 // creates an endpoint for the route /api
 app.get('/', (req, res) => {
-  //res.json({ message: 'Hello from My template ExpressJS' });
-  res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
+  res.json({ message: 'Hello from Cinenova' });
+  //res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
 });
 
 // create the get request to connect to DB
@@ -103,10 +103,11 @@ app.get('/api/fav', async (req, res) => {
 })
 
 // create the get request to fetch user's fav movies
-app.get('/api/movies', async (req, res) => {
+app.get('/api/fav/:user_email', async (req, res) => {
   try {
-    const { rows: movie } = await db.query('SELECT * FROM fav WHERE user_email = $1',[req.query.user_email]);
-    res.send(movie);
+    const user_email = req.params.user_email; // Get user_email from the query parameter
+    const { rows: movieIds } = await db.query('SELECT movie_id FROM fav WHERE user_email = $1', [user_email]);
+    res.send(movieIds);
   } catch (e) {
     console.error(e);
     return res.status(400).json({ e });

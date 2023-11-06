@@ -1,9 +1,29 @@
-import React from 'react';
+import React ,{useState, useEffect} from 'react';
+import { fetchFavByEmail } from '../../API';
 
 
 const Profile = (props) => {
   let user = props.user;
-  console.log("user2",user);
+  //console.log("user2",user);
+  const [favMovie, setFavMovie] = useState()
+
+  useEffect(() => {
+  const fetchFav = async () => {
+    try {
+      const response = await fetchFavByEmail(user.email)
+
+      const formattedMovie = response.data;
+      console.log("response", response.data)
+      setFavMovie(formattedMovie);
+      console.log(formattedMovie); // Log the formatted movies
+    
+    } catch (error) {
+      console.error('Error fetching Fav movies:', error);
+    }
+  };
+
+  fetchFav();
+ }, []) // Call the fetchFav function
  
 
   return (
@@ -28,6 +48,7 @@ const Profile = (props) => {
           {JSON.stringify(user, null, 2)}
         </pre>
       </div>
+
       
     </div>
   );

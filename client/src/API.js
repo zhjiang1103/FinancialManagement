@@ -59,6 +59,11 @@ export function fetchFavDB(user_email, movie_id){
     return axios.get(apiUrl, {params: {user_email,movie_id}})
 }
 
+export function fetchFavByEmail(user_email){
+    const apiUrl = `http://localhost:8080/api/fav/${user_email}`;
+    return axios.get(apiUrl, {params: {user_email}})
+}
+
 export function fetchFavPost(user_email, movie_id){
     const apiUrl = "http://localhost:8080/api/fav";
     return axios.post(apiUrl, {user_email,movie_id})
