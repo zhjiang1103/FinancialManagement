@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const backend = process.env.REACT_APP_BACKEND
+
 //fetching popular movies from Movie API 
 export function fetchPopular() {
     const apiUrl = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
@@ -55,21 +57,22 @@ export function fetchByID(ID){
 }
 
 export function fetchFavDB(user_email, movie_id){
-    const apiUrl = "http://localhost:8080/api/fav";
+   
+    const apiUrl = `${backend}/api/fav`;
     return axios.get(apiUrl, {params: {user_email,movie_id}})
 }
 
 export function fetchFavByEmail(user_email){
-    const apiUrl = `http://localhost:8080/api/fav/${user_email}`;
+    const apiUrl = `${backend}/api/fav/${user_email}`;
     return axios.get(apiUrl, {params: {user_email}})
 }
 
 export function fetchFavPost(user_email, movie_id){
-    const apiUrl = "http://localhost:8080/api/fav";
+    const apiUrl = `${backend}/api/fav`;
     return axios.post(apiUrl, {user_email,movie_id})
 }
 
 export function fetchFavDelete(user_email, movie_id){
-    const apiUrl = "http://localhost:8080/api/fav";
+    const apiUrl = `${backend}/api/fav`;
     return axios.delete(apiUrl, {params: {user_email,movie_id}})
 }
