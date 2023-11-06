@@ -105,7 +105,7 @@ app.get('/api/fav', async (req, res) => {
 // create the get request to fetch user's fav movies
 app.get('/api/movies', async (req, res) => {
   try {
-    const { rows: movie } = await db.query('SELECT * FROM fav WHERE user_email = $1');
+    const { rows: movie } = await db.query('SELECT * FROM fav WHERE user_email = $1',[req.query.user_email]);
     res.send(movie);
   } catch (e) {
     console.error(e);
