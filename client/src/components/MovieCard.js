@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 
 //const ViewContact = ({contact, toUpdate, toDelete})
 const MovieCard = (props) => {
- let movie = props.movie
- console.log("props passing", movie)
+
+
 
     // const onUpdate = (toUpdateContact) => {
     //     toUpdate(toUpdateContact)

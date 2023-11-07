@@ -8,8 +8,8 @@ const Recommendation = () => {
   const [RecomData, setRecomData] = useState([]);
   const [purpose, setPurpose] = useState([]);
 
-  const fetchGPTBackend = (purpose) =>{
-    setPurpose(purpose)
+  const fetchGPTBackend = (userPurpose) =>{
+    setPurpose(userPurpose)
     const url = `http://localhost:8080/recommendations?purpose=${purpose}`;
     axios.get(url)
       //.then((response) => console.log(response.data))
@@ -17,12 +17,16 @@ const Recommendation = () => {
 
       .catch((error) => console.error('Error fetching data:', error));
   }
-  useEffect(() => {
-    fetchGPTBackend();
-  }, [purpose]);
-
+  // useEffect(() => {
+  //   if (purpose) {
+  //     fetchGPTBackend(purpose);
+  //   }
+  // }, [purpose]);
+  
 const onSubmit=(purpose)=>{
-  fetchGPTBackend(purpose)
+  if (purpose) {
+    fetchGPTBackend(purpose);
+  }
 }
 
   return (
