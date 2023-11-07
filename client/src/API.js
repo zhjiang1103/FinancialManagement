@@ -62,7 +62,7 @@ export function fetchFavDB(user_email, movie_id){
     return axios.get(apiUrl, {params: {user_email,movie_id}})
 }
 
-export function fetchFavByEmail(user_email){
+export function fetchFavList(user_email){
     const apiUrl = `${backend}/api/fav/${user_email}`;
     return axios.get(apiUrl, {params: {user_email}})
 }

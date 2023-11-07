@@ -107,7 +107,12 @@ app.get('/api/fav/:user_email', async (req, res) => {
   try {
     const user_email = req.params.user_email; // Get user_email from the query parameter
     const { rows: movieIds } = await db.query('SELECT movie_id FROM fav WHERE user_email = $1', [user_email]);
-    res.send(movieIds);
+    let movieResults = []
+    for (let movieObject of movieIds) {
+      let movieInfo = await fetchByID(movieObject.movie_id);
+      movieResults.push(movieInfo)
+    }
+    res.send(movieResults);
   } catch (e) {
     console.error(e);
     return res.status(400).json({ e });
@@ -142,10 +147,30 @@ const getMovieInfo = async function (req, res) {
 app.get('/recommendations', [getChat, getMovieInfo]);
 
 
-//function to do fetching
+//function to do fetching by name
 const fetchDB = async (recommendation) => {
   const apiKey = process.env.MovieDB_API_KEY
   const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    }
+  };
+
+  const json = await fetch(url, options)
+    .then(res => res.json())
+    //.then(json => json)
+    .catch(err => console.error('error:' + err));
+  return json
+
+}
+
+//function to do fetching by ID
+const fetchByID = async (id) => {
+  const apiKey = process.env.MovieDB_API_KEY
+  const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
   const options = {
     method: 'GET',
     headers: {
