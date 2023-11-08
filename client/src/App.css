@@ -94,3 +94,8 @@ ul,li {
 .new-line-description {
   display: block;
 }
+
+.centered-video {
+  display: block;
+  margin: 0 auto; /* Center the video horizontally */
+}

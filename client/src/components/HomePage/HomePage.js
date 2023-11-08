@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import MovieCard from '../MovieCard';
+import MovieClip from '../MovieClip';
 import { fetchPopular } from '../../API';
 
 
@@ -10,8 +11,11 @@ import { fetchPopular } from '../../API';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
-
-
+const videoId=["6JnN1DmbqoU","GYOQBfT8UU4","uY4efoSe-Kc","rYY5QdEGEZw","UqcGdmJJVTY", "hyyyKcfJRGQ", "cg5z7wgOUig", "V2fJv2omoZU"]
+// Generate a random index between 0 and the length of the videoIds array
+const randomIndex = Math.floor(Math.random() * videoId.length);
+// Select the video ID at the random index
+const randomVideoId = videoId[randomIndex];
   // Make the GET request to fetch popular movies
 
   useEffect(() => {
@@ -34,13 +38,15 @@ const HomePage = () => {
 
   return (
     <div>
-
+      <div className='centered-video'>
+      <MovieClip videoId={randomVideoId}/>
+      </div>
       <h2>Popular Movies</h2>
       <ul>
         <div className="movie-list">
           {movies.map(movie => (
             <div className="movie-card">
-              <li key={movie.id}><MovieCard movie={movie}/></li>
+              <li key={movie.id}><MovieCard movie={movie} /></li>
             </div>
           ))}
         </div>
