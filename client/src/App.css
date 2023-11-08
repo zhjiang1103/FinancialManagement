@@ -100,22 +100,42 @@ ul,li {
 
 .centered-video {
   display: block;
-  margin: 0 auto; /* Center the video horizontally */
+  margin-top: 5%;
+  margin-left: 15%; /* Center the video horizontally */
 }
 
- .h2,h2{
+ .title{
   font-family: "Roboto", sans-serif; /* Use Roboto as the font family */
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
   color: f8f8f8;
+  margin-left: 40%;
 }
 
 /* NavBar.css */
 
-/* .navbar-with-background {
-  background-image: url('client/src/assets/Rectangle 56.png'); /* Use a relative path */
-  /* background-size: cover; 
-  background-repeat: no-repeat; */
-/* } */
+.navbar-with-background {
+  background-image: url('https://raw.githubusercontent.com/zhjiang1103/FinalProject/85aa26341a572c51058b9fd8c83d224987e22e79/client/public/Rectangle%2056.png'); /* Use a relative path */
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
+.btn-danger {
+  --bs-btn-color: #131313 !important;
+  --bs-btn-bg: #FECF58 !important;
+  --bs-btn-border-color: #FECF58 !important;
+  --bs-btn-hover-color:#FECF58 !important;
+  --bs-btn-hover-bg: darkorange !important;
+}
+
+.a {
+  color: #FECF58;
+  text-decoration: auto;
+}
+
+.a:hover {
+  color: #131313;
+}
+

@@ -11,7 +11,6 @@ const NavBar = () => {
       <nav className="navbar navbar-expand-md navbar-light navbar-with-background"> {/* Add a custom class */}
         <div className="container">
           <div className="navbar-brand logo" /> 
-          <img src = "https://www.figma.com/file/UH2efr4osU6Y5lBSYzlDSr/Movie-website?type=design&node-id=124-479&mode=design&t=qo1aqa1Y3UIBWiuY-4" alt = "Logo"/>
           <Link to = "/search">Search</Link>
           <Link to = "/">Home</Link>
           <Link to = "/recommendation">Recommendation</Link>
