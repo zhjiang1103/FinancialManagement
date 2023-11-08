@@ -1,3 +1,6 @@
+
+
+
 .App {
   
   text-align: center;
@@ -99,3 +102,20 @@ ul,li {
   display: block;
   margin: 0 auto; /* Center the video horizontally */
 }
+
+ .h2,h2{
+  font-family: "Roboto", sans-serif; /* Use Roboto as the font family */
+  margin-top: 60px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: f8f8f8;
+}
+
+/* NavBar.css */
+
+/* .navbar-with-background {
+  background-image: url('client/src/assets/Rectangle 56.png'); /* Use a relative path */
+  /* background-size: cover; 
+  background-repeat: no-repeat; */
+/* } */
