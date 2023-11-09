@@ -10,11 +10,11 @@ const Recommendation = () => {
   const [purpose, setPurpose] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  //get recommendation movies by fetching the backend using user's input
   const fetchGPTBackend = (userPurpose) =>{
     setPurpose(userPurpose)
     const url = `http://localhost:8080/recommendations?purpose=${purpose}`;
     axios.get(url)
-      //.then((response) => console.log(response.data))
       .then((response) => {
         setRecomData(response.data);
         setIsLoading(false);
@@ -22,12 +22,8 @@ const Recommendation = () => {
       }) 
       .catch((error) => console.error('Error fetching data:', error));
   }
-  // useEffect(() => {
-  //   if (purpose) {
-  //     fetchGPTBackend(purpose);
-  //   }
-  // }, [purpose]);
-  
+
+  //When purpose is defined, call fetchbackend
 const onSubmit=(purpose)=>{
   setIsLoading(true);
   if (purpose) {

@@ -149,14 +149,16 @@ html {
 .navbar{
   --bs-navbar-padding-y: 5rem !important;
 }
+
 .searchPage{
    display: 'flex';
    align-Items: 'center';
    padding: '20px';
    justify-content: 'space-between' 
 }
+
 .dropdown{
-  padding: 8px;
+  padding: 8px !important;
 }
 
 h2{

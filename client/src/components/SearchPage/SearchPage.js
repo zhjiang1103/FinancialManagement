@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react'
 
 const SearchPage = () => {
   const [searchWord, setSearchWord] = useState('')
-  // const [person,setPerson] = useState([])
   const [movies, setMovies] = useState([])
   const [selectedSearch, setSelectedSearch] = useState(''); // State to store the selected search value
 
@@ -19,7 +18,7 @@ const SearchPage = () => {
   };
   
 
-  
+  //Call different fetch function according to search type
   const onSubmit = (searchWord) => {
     setSearchWord(searchWord)
     console.log("Searchword", searchWord)
@@ -28,7 +27,7 @@ const SearchPage = () => {
 
   }
  
-
+//get movie info search by movie title
   const fetchMoviesByTitle = async (title) => {
     try {
       const response = await fetchByTitle(title)
@@ -46,13 +45,13 @@ const SearchPage = () => {
   // The title dependency array ensures the effect runs when title changes
 
 
+  //get movie info search by person name
   const fetchMoviesByPerson = async (person) => {
     try {
       const response = await fetchByPerson(person)
 
       const formattedMovies = response.data.results;
       setMovies(formattedMovies[0].known_for);
-      console.log("formattedMovies", formattedMovies[0].known_for) // Log the formatted movies
     } catch (error) {
       console.error('Error fetching movies:', error);
     }
@@ -67,13 +66,11 @@ const SearchPage = () => {
     <>
       
 
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {/* Dropdown component */}
-        <select value={selectedSearch} onChange={handleDropdownChange}>
+      <div className='searchPage'>
+        <select className='dropdown' value={selectedSearch} onChange={handleDropdownChange}>
           <option value="">Search By</option>
           <option value="title">Movie Title</option>
           <option value="person">Person</option>
-          {/* Add more categories as needed */}
         </select>
 
 

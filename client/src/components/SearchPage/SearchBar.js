@@ -3,6 +3,7 @@ import {Button,Form} from "react-bootstrap"
 
 const SearchBar = (props) => {
 
+    //handle submit event to pass user input to parent component
     const handleSubmit = (event) => {
         event.preventDefault()
         props.onSubmit(event.target.elements.search.value)//prevents rerendering
@@ -12,7 +13,7 @@ const SearchBar = (props) => {
     return (
         <>
            
-            <Form className='RecomMessage' onSubmit={handleSubmit}>
+            <Form className='searchBar' onSubmit={handleSubmit}>
 
                 <input 
                     type="text"

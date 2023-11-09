@@ -44,6 +44,7 @@ export function fetchByPerson(person){
     })
 }
 
+//Search for movies by their ID in TMDB
 export function fetchByID(ID){
     const apiUrl = `https://api.themoviedb.org/3/movie/${ID}?language=en-US`;
     const apiKey = process.env.REACT_APP_API_KEY
@@ -56,22 +57,26 @@ export function fetchByID(ID){
     })
 }
 
+//get request to backend to fetch fav table
 export function fetchFavDB(user_email, movie_id){
    
     const apiUrl = `${backend}/api/fav`;
     return axios.get(apiUrl, {params: {user_email,movie_id}})
 }
 
+//get request to backend to fatch user's fav movies based by email
 export function fetchFavList(user_email){
     const apiUrl = `${backend}/api/fav/${user_email}`;
     return axios.get(apiUrl, {params: {user_email}})
 }
 
+//post request to add movie to user's favorite list
 export function fetchFavPost(user_email, movie_id){
     const apiUrl = `${backend}/api/fav`;
     return axios.post(apiUrl, {user_email,movie_id})
 }
 
+//delete request to remove a movie from user's favorite list
 export function fetchFavDelete(user_email, movie_id){
     const apiUrl = `${backend}/api/fav`;
     return axios.delete(apiUrl, {params: {user_email,movie_id}})

@@ -6,7 +6,7 @@ import { fetchPopular } from '../../API';
 
 
 
-// import { Route, Routes, Link, useParams } from 'react-router-dom';
+
 
 
 const HomePage = () => {

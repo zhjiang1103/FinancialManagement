@@ -6,10 +6,9 @@ import { fetchFavList } from '../../API';
 
 const Profile = (props) => {
   let user = props.user;
-  //console.log("user2",user);
   const [favMovie, setFavMovie] = useState()
 
-
+//async function to get list of user's favorite movie list
   const handleFavoriteClick = async () => {
     try {
       const response = await fetchFavList(user.email)

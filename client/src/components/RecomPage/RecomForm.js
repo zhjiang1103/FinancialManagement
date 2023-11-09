@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 const RecomForm = (props) => {
 
+//handle form submition to pass user input to parent component
 const handleAddForm = (event) =>{
   event.preventDefault()
   props.onSubmit(event.target.elements.purpose.value)
@@ -25,8 +26,6 @@ const handleAddForm = (event) =>{
                     id="add-user-purpose"
                     placeholder="purpose"
                     required
-                 
-                //onChange={handleAddFilm}
                 />
             </Form.Group>
            
