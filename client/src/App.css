@@ -131,14 +131,15 @@ ul,li {
   --bs-btn-hover-bg: darkorange !important;
 }
 
-.a {
+a {
   color: #FECF58 !important;
   text-decoration: auto !important;
   font-size: x-large;
 }
 
-.a:hover {
-  color: #FECF58 !important;
+
+a:hover {
+  color: #131313 !important;
 }
 
 html {
@@ -159,9 +160,9 @@ html {
 }
 
 h2{
-  margin-bottom: 0.5rem;
+  margin-top: 1rem !important;
     font-weight: 500;
     line-height: 1.2;
     color: var(--bs-heading-color);
-    padding: 8px;
+    padding: 30px !important
 }
