@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import RecomForm from './RecomForm'
 import axios from 'axios';
 import MovieCard from '../MovieCard';

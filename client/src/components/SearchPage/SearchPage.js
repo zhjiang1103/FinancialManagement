@@ -1,6 +1,6 @@
 import React from 'react'
 import SearchBar from './SearchBar'
-import Filtering from './Filtering'
+
 import MovieCard from '../MovieCard'
 import { fetchByTitle } from '../../API'
 import { fetchByPerson } from '../../API'
@@ -17,16 +17,9 @@ const SearchPage = () => {
     setSelectedSearch(event.target.value);
 
   };
-  // useEffect(() => {
-  //   // Log the updated selectedSearch in the console
-  //   console.log(selectedSearch);
-  // }, [selectedSearch]); // This effect runs when selectedSearch changes
+  
 
-
-  //Fetch api
-  //search bar component
-  //filtering component
-  //movie card
+  
   const onSubmit = (searchWord) => {
     setSearchWord(searchWord)
     console.log("Searchword", searchWord)
@@ -34,11 +27,7 @@ const SearchPage = () => {
     else if (selectedSearch === "person") { fetchMoviesByPerson(searchWord) }
 
   }
-  // const onSubmit = (searchPerson) => {
-  //     setPerson(searchPerson)
-  //     console.log("person", person)
-  //     fetchMoviesByPerson(person)
-  // }
+ 
 
   const fetchMoviesByTitle = async (title) => {
     try {
@@ -90,7 +79,7 @@ const SearchPage = () => {
 
         <SearchBar onSubmit={onSubmit}  />
       </div>
-      <div><Filtering /></div>
+ 
       <div>
         <ul>
           <div className="movie-list">
