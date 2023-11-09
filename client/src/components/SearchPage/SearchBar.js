@@ -1,4 +1,5 @@
 import React from 'react'
+import {Button,Form} from "react-bootstrap"
 
 const SearchBar = (props) => {
 
@@ -11,7 +12,7 @@ const SearchBar = (props) => {
     return (
         <>
            
-            <form onSubmit={handleSubmit}>
+            <Form className='RecomMessage' onSubmit={handleSubmit}>
 
                 <input 
                     type="text"
@@ -20,8 +21,8 @@ const SearchBar = (props) => {
                     placeholder="Search by movie title or person name"
 
                 />
-                <button type="submit">Search</button>
-            </form>
+                <Button type="submit" variant="outline-success">Search</Button>
+            </Form>
 
         </>
     )

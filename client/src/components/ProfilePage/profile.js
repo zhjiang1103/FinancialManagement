@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Button} from "react-bootstrap"
 import MovieCard from '../MovieCard';
 import { fetchFavList } from '../../API';
 
@@ -37,7 +38,7 @@ const Profile = (props) => {
       />
       
       <div>
-        <button onClick={handleFavoriteClick}>Your Favorited Movie List</button>
+        <Button variant="outline-success" onClick={handleFavoriteClick}>Your Favorited Movie List</Button>
 
 
 

@@ -124,7 +124,7 @@ const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
   const purpose = req.query.purpose; // Adjust this based on your client request structure
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: `Please provide 10 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
+    messages: [{ role: "system", content: `Please provide 10 recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
     model: "gpt-3.5-turbo",
   });
   const content = JSON.parse(completion.choices[0].message.content);
@@ -190,40 +190,6 @@ const fetchByID = async (id) => {
 
 
 
-
-
-
-
-// //A put request - Update a student 
-// app.put('/api/students/:studentId', cors(), async (req, res) =>{
-// console.log(req.params);
-// //This will be the id that I want to find in the DB - the student to be updated
-// const studentId = req.params.studentId
-// const updatedStudent = { id: req.body.id, firstname: req.body.firstname, lastname: req.body.lastname}
-// console.log("In the server from the url - the student id", studentId);
-// console.log("In the server, from the react - the student to be edited", updatedStudent);
-// // UPDATE students SET lastname = "something" WHERE id="16";
-// const query = `UPDATE students SET lastname=$1, firstname=$2 WHERE id=${studentId} RETURNING *`;
-// const values = [updatedStudent.lastname, updatedStudent.firstname];
-// try {
-// const updated = await db.query(query, values);
-// console.log(updated.rows[0]);
-// res.send(updated.rows[0]);
-
-// }catch(e){
-// console.log(e);
-// return res.status(400).json({e})
-// }
-// })
-
-// // delete request
-// app.delete('/api/students/:studentId', cors(), async (req, res) =>{
-// const studentId = req.params.studentId;
-// //console.log("From the delete request-url", req.params);
-// await db.query('DELETE FROM students WHERE id=$1', [studentId]);
-// res.status(200).end();
-
-// });
 
 
 
