@@ -1,3 +1,24 @@
+# Project Name: CineNova
+
+### Technologies: 
+
+| Backend 	| Frontend 	| Database   	| Testing   	|
+|---------	|----------	|------------	|-----------	|
+| Node    	| Vite     	| PostgreSQL 	| RTL       	|
+| Express 	| React    	| SQL        	| Vitest    	|
+| Postman 	|     	    |         	    |       	    |
+
+
+### Dependencies: 
+
+| Backend      	| Frontend        	| Database 	| Testing                   	|
+|--------------	|-----------------	|----------	|---------------------------	|
+| cors         	| react-bootstrap 	| pg       	| @testing-library/react    	|
+| dotenv       	| bootstrap       	|          	| @testing-library/jest-dom 	|
+| concurrently 	| react-router-dom 	|          	| vitest-dom                	|
+| nodemon      	|                 	|          	|                           	|
+ 
+
 1. Trello: https://trello.com/b/TMAKO7Or/film-recommendation-app
 2. Project pitch: https://zhjiang1103.bit.ai/docs/view/FZdUAI2gtU2G4qES
 

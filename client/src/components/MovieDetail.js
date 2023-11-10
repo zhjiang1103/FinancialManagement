@@ -73,7 +73,7 @@ const MovieDetail = (props) => {
   return (
     <>
       <div className='movieDetail'>
-        <Card>
+        <Card >
           <Card.Body >
             <Card.Img variant="top" src={url} style={{ width: '20%', height: '20%' }} />
             <Heart isClick={isFavourite} onClick={handleToggleFavourite} >Favourite</Heart>
@@ -82,17 +82,20 @@ const MovieDetail = (props) => {
             </div>
             <Card.Text>
               <div>
-                <span>Movie Description: </span>
+                <span><strong>Movie Description: </strong></span>
                 <div className="new-line-description">{movie.overview}</div>
               </div>
               <div className="movie-category">
-              <span className="category-label">Category:</span>
+              <span className="category-label"><strong>Category:</strong></span>
+    
               {genres.map(genre => (
                 <div className="genres">
-                  <li key={genre.id}> {genre.name}</li>
+                  <ul> <li key={genre.id}> {genre.name}</li></ul>
+                 
                 </div>
               ))}
             </div>
+            
             </Card.Text>
 
           </Card.Body>

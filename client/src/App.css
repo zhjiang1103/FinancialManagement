@@ -1,3 +1,6 @@
+
+
+
 .App {
   
   text-align: center;
@@ -93,4 +96,84 @@ ul,li {
 
 .new-line-description {
   display: block;
+}
+
+.centered-video {
+  width: 50%;
+  display: block;
+  /* margin-top: 5%;
+  margin-left: 15%; Center the video horizontally */
+  margin-left: 20%;
+}
+
+ .title{
+  font-family: "Roboto", sans-serif; 
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: f8f8f8;
+  margin-left: 40%;
+}
+
+/* NavBar.css */
+
+.navbar-with-background {
+  background-image: url('https://raw.githubusercontent.com/zhjiang1103/FinalProject/85aa26341a572c51058b9fd8c83d224987e22e79/client/public/Rectangle%2056.png'); /* Use a relative path */
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
+.btn-danger {
+  --bs-btn-color: #131313 !important;
+  --bs-btn-bg: #FECF58 !important;
+  --bs-btn-border-color: #FECF58 !important;
+  --bs-btn-hover-color:#FECF58 !important;
+  --bs-btn-hover-bg: darkorange !important;
+}
+
+a {
+  color: #FECF58 !important;
+  text-decoration: auto !important;
+  font-size: x-large;
+}
+
+
+a:hover {
+  color: #131313 !important;
+}
+
+html {
+  background-color: #131313;
+}
+
+.navbar{
+  --bs-navbar-padding-y: 5rem !important;
+}
+
+.searchPage{
+   display: 'flex';
+   align-Items: 'center';
+   padding: '20px';
+   justify-content: 'space-between' 
+}
+
+.dropdown{
+  padding: 8px !important;
+}
+
+h2{
+  margin-top: 1rem !important;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--bs-heading-color);
+    padding: 30px !important
+}
+
+button{
+  margin-top: 4px !important;
+  margin-left: 5px !important ;
+}
+
+img{
+  margin-left: 10%;
 }

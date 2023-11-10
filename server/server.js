@@ -107,7 +107,12 @@ app.get('/api/fav/:user_email', async (req, res) => {
   try {
     const user_email = req.params.user_email; // Get user_email from the query parameter
     const { rows: movieIds } = await db.query('SELECT movie_id FROM fav WHERE user_email = $1', [user_email]);
-    res.send(movieIds);
+    let movieResults = []
+    for (let movieObject of movieIds) {
+      let movieInfo = await fetchByID(movieObject.movie_id);
+      movieResults.push(movieInfo)
+    }
+    res.send(movieResults);
   } catch (e) {
     console.error(e);
     return res.status(400).json({ e });
@@ -117,8 +122,9 @@ app.get('/api/fav/:user_email', async (req, res) => {
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
+  const purpose = req.query.purpose; // Adjust this based on your client request structure
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "Please provide 5 recommendated movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone who is age 40 and likes action movies. " }],
+    messages: [{ role: "system", content: `Please provide 10 recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
     model: "gpt-3.5-turbo",
   });
   const content = JSON.parse(completion.choices[0].message.content);
@@ -142,7 +148,7 @@ const getMovieInfo = async function (req, res) {
 app.get('/recommendations', [getChat, getMovieInfo]);
 
 
-//function to do fetching
+//function to do fetching by name
 const fetchDB = async (recommendation) => {
   const apiKey = process.env.MovieDB_API_KEY
   const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
@@ -162,42 +168,28 @@ const fetchDB = async (recommendation) => {
 
 }
 
+//function to do fetching by ID
+const fetchByID = async (id) => {
+  const apiKey = process.env.MovieDB_API_KEY
+  const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    }
+  };
+
+  const json = await fetch(url, options)
+    .then(res => res.json())
+    //.then(json => json)
+    .catch(err => console.error('error:' + err));
+  return json
+
+}
 
 
 
-
-
-
-// //A put request - Update a student 
-// app.put('/api/students/:studentId', cors(), async (req, res) =>{
-// console.log(req.params);
-// //This will be the id that I want to find in the DB - the student to be updated
-// const studentId = req.params.studentId
-// const updatedStudent = { id: req.body.id, firstname: req.body.firstname, lastname: req.body.lastname}
-// console.log("In the server from the url - the student id", studentId);
-// console.log("In the server, from the react - the student to be edited", updatedStudent);
-// // UPDATE students SET lastname = "something" WHERE id="16";
-// const query = `UPDATE students SET lastname=$1, firstname=$2 WHERE id=${studentId} RETURNING *`;
-// const values = [updatedStudent.lastname, updatedStudent.firstname];
-// try {
-// const updated = await db.query(query, values);
-// console.log(updated.rows[0]);
-// res.send(updated.rows[0]);
-
-// }catch(e){
-// console.log(e);
-// return res.status(400).json({e})
-// }
-// })
-
-// // delete request
-// app.delete('/api/students/:studentId', cors(), async (req, res) =>{
-// const studentId = req.params.studentId;
-// //console.log("From the delete request-url", req.params);
-// await db.query('DELETE FROM students WHERE id=$1', [studentId]);
-// res.status(200).end();
-
-// });
 
 
 
