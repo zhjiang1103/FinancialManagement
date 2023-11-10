@@ -103,7 +103,7 @@ ul,li {
   display: block;
   /* margin-top: 5%;
   margin-left: 15%; Center the video horizontally */
-  margin:auto
+  margin-left: 20%;
 }
 
  .title{
@@ -167,4 +167,13 @@ h2{
     line-height: 1.2;
     color: var(--bs-heading-color);
     padding: 30px !important
+}
+
+button{
+  margin-top: 4px !important;
+  margin-left: 5px !important ;
+}
+
+img{
+  margin-left: 10%;
 }
