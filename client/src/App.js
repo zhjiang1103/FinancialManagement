@@ -41,7 +41,10 @@ return (
             </Routes>
           </>
         ) : (
-          <span>Hello from Cinenova!!! Please Log in or sign up!</span>
+          <>
+          <span>Hello from Cinenova!!! <strong>Please Log in or sign up!</strong></span>
+          <img src = "http://www.animated-gifs.fr/category_objects/robots/10660215.gif" alt = "Robot gif"></img>
+          </>
         )}
       </div>
 
