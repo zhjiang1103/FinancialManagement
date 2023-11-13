@@ -124,7 +124,7 @@ const openai = new OpenAI({ apiKey: process.env.openai_key });
 const getChat = async function (req, res, next) {
   const purpose = req.query.purpose; // Adjust this based on your client request structure
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: `Please provide 10 recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
+    messages: [{ role: "system", content: `Please provide 10 unique recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
     model: "gpt-3.5-turbo",
   });
   const content = JSON.parse(completion.choices[0].message.content);
