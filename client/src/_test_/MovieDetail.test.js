@@ -22,24 +22,8 @@ describe('MovieDetail', () => {
       // Assert: Perform your assertions
       expect(screen.getByText(/Loading/i)).toBeInTheDocument(); // Loading message should be visible initially
 
-      // Mock API requests here (e.g., Axios.get)
-      // Ensure that the component updates after data is loaded
-
-      // Example mock API request with Axios (add more mock responses as needed)
-      // axios.get.mockResolvedValue({
-      //   data: {
-      //     id: 123,
-      //     title: 'Sample Movie',
-      //     // Other movie data...
-      //   },
-      // });
-
-      // Wait for the component to update with fetched data
-      // For example, you can check if specific movie details are displayed:
-      // expect(screen.getByText(/Sample Movie/i)).toBeInTheDocument();
-      // Add more assertions based on your component's UI.
-
-      // If the data is dynamically loaded, ensure the component's UI reflects that data.
+     
+      
     });
   });
 });
