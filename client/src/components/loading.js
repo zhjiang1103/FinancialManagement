@@ -5,6 +5,7 @@ const loadingImg =
 const Loading = () => (
   <div className="spinner">
     <img src={loadingImg} alt="Loading..." />
+    {/* Adding alt for pictures to make it accesibility */}
   </div>
 );
 

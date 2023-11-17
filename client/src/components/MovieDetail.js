@@ -3,19 +3,18 @@ import Card from 'react-bootstrap/Card';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchByID,fetchFavDB,fetchFavPost, fetchFavDelete } from '../API';
-
 import Heart from 'react-animated-heart';
 
 
 const MovieDetail = (props) => {
+  //get user email from props passed from parent component
   const { id } = useParams();
-  console.log("user", props.user)
-  
   const [isFavourite, setIsFavourite] = useState('false');
   const [movie, setMovie] = useState({});
   const [componentHasFetchedData, setComponentHasFetchedData] = useState(false)
-  // Make the GET request to fetch popular movies
 
+
+  //Handle favorite button click event, call different http request based on user's behaviors
   const handleToggleFavourite = () => {
     setIsFavourite(!isFavourite);
     if(isFavourite){
@@ -35,7 +34,6 @@ const MovieDetail = (props) => {
         const formattedMovie = response.data;
         console.log("response", response.data)
         setMovie(formattedMovie);
-        console.log(formattedMovie); // Log the formatted movies
         setComponentHasFetchedData(true)
       } catch (error) {
         console.error('Error fetching movies:', error);
@@ -47,12 +45,7 @@ const MovieDetail = (props) => {
     const fetchFav = async() =>{
       try {
         const response = await fetchFavDB(props.user.email, id)
-
-       
-     
         setIsFavourite(response.data.isFav);
-        console.log(response.data.isFav); // Log the formatted movies
-        
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
@@ -62,10 +55,8 @@ const MovieDetail = (props) => {
 , [id, props.user?.email]); // The empty dependency array ensures the effect runs once
 
   let url = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-  console.log("movie", movie)
   let genres = movie.genres || [];
 
- //console.log(componentHasFetchedData)
   if(!componentHasFetchedData) {
     return (<div> Loading ... </div>)
   }

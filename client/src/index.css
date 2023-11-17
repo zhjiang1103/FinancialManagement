@@ -13,11 +13,3 @@ code {
     monospace;
 }
 
-a {
-  color: #FECF58;
-  text-decoration: auto;
-}
-
-a:hover {
-  color: #131313;
-}
