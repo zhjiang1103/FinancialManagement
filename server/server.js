@@ -11,8 +11,8 @@ const fetch = require('node-fetch');
 
 const app = express();
 ///Users/cristina/src/2022H2TemplateFinal/client/build
-//const REACT_BUILD_DIR = path.join(__dirname, '..', 'client', 'build');
-//app.use(express.static(REACT_BUILD_DIR));
+const REACT_BUILD_DIR = path.join(__dirname, '..', 'client', 'build');
+app.use(express.static(REACT_BUILD_DIR));
 
 const PORT = process.env.PORT || 8080;
 app.use(cors());
@@ -21,7 +21,7 @@ app.use(express.json());
 // creates an endpoint for the route /api
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from Cinenova' });
-  //res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
+  res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
 });
 
 // create the get request to connect to DB
