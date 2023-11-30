@@ -10,7 +10,6 @@ const fetch = require('node-fetch');
 
 
 const app = express();
-///Users/cristina/src/2022H2TemplateFinal/client/build
 const REACT_BUILD_DIR = path.join(__dirname, '..', 'client', 'build');
 app.use(express.static(REACT_BUILD_DIR));
 
