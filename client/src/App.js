@@ -16,31 +16,11 @@ function App() {
  
 
   const { isLoading } = useAuth0();
-  const { user } = useAuth0();
+  const { isAuthenticated,user } = useAuth0();
   if (isLoading) {
     return <Loading />;
   }
 
-  // useEffect(() => {
-  //   const handleUserPost = (data) => {
-  //     //console.log("Inside the App", data);
-  //   fetch("http://localhost:8080/api/users", {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(data)
-  //   })
-  //   .then((reponse) => reponse.json())
-  //   .then((result) => {
-  //     console.log("Inside the post line 32", result)
-  //     setUsers([...users, result])
-  //   })
-  // }
-    
-  //   handleUserPost(user); // Call the function
-
-
-  // }, []); 
-  
 
 
  
@@ -49,16 +29,25 @@ return (
       <NavBar />
 
       <div className="container flex-grow-1">
-        {!user ? <span>Hello from Cinenova!!!</span> : <span>Hello <Link to="profile">{user.name}</Link></span>}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/movies/:id" element={<MovieDetail user={user}/>} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/recommendation" element={<Recommendation />} />
-          <Route path="/profile" element={<Profile user={user} />} />
-          {/* <Route path="api/me" element={<Profile user={user}/>} /> */}
-        </Routes>
+      {isAuthenticated ? (
+          <>
+            <span>Hello <Link to="/profile">{user.name}</Link></span>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/movies/:id" element={<MovieDetail user={user} />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/recommendation" element={<Recommendation />} />
+              <Route path="/profile" element={<Profile user={user} />} />
+            </Routes>
+          </>
+        ) : (
+          <>
+          <span>Hello from Cinenova!!! <strong>Please Log in or sign up!</strong></span>
+          <img src = "http://www.animated-gifs.fr/category_objects/robots/10660215.gif" alt = "Robot gif"></img>
+          </>
+        )}
       </div>
+
     </div>
   );
 }

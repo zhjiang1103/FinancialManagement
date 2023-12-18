@@ -1,10 +1,14 @@
 import React from 'react'
-import {Button, Form, Dropdown} from "react-bootstrap"
+import {Button, Form} from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
-const RecomForm = () => {
+const RecomForm = (props) => {
 
-const handleAddForm = () =>{}
+//handle form submition to pass user input to parent component
+const handleAddForm = (event) =>{
+  event.preventDefault()
+  props.onSubmit(event.target.elements.purpose.value)
+}
 
   return (
     <>
@@ -18,11 +22,10 @@ const handleAddForm = () =>{}
                 <Form.Label>Tell me what is your purpose of watching a movie?</Form.Label>
                 <input
                     type="text"
+                    name="purpose"
                     id="add-user-purpose"
                     placeholder="purpose"
                     required
-                 
-                //onChange={handleAddFilm}
                 />
             </Form.Group>
            
