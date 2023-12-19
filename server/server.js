@@ -125,7 +125,7 @@ const getChat = async function (req, res, next) {
   console.log("start", new Date())
   const purpose = req.query.purpose; // Adjust this based on your client request structure
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: `Please provide 10 unique recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
+    messages: [{ role: "system", content: `Please provide 10 unique recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have one property: name. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
     model: "gpt-3.5-turbo",
   });
 
