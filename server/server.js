@@ -120,14 +120,18 @@ app.get('/api/fav/:user_email', async (req, res) => {
 
 //Get recommendation using openAI API
 const openai = new OpenAI({ apiKey: process.env.openai_key });
+
 const getChat = async function (req, res, next) {
+  console.log("start", new Date())
   const purpose = req.query.purpose; // Adjust this based on your client request structure
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: `Please provide 10 unique recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have three properties: name, year, summary. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
     model: "gpt-3.5-turbo",
   });
+
   const content = JSON.parse(completion.choices[0].message.content);
   req["ChatGptResult"] = content;
+  console.log("end", new Date())
 
   //console.log('CB0');
   next();
