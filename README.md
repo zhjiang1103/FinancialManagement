@@ -1,5 +1,5 @@
 # Project Name: CineNova
-CineNova is a user-centric movie companion web application that streamlines entertainment decisions by providing personalized recommendations, ensuring an effortless and tailored experience for every user's unique purpose of watching movies.
+CineNova is a user-centric movie companion web application that utilizes openAI to streamline entertainment decisions by providing personalized recommendations, ensuring an effortless and tailored experience for every user's unique purpose of watching movies.
 
 
 ### Technologies: 
