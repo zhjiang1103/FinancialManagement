@@ -2,11 +2,11 @@
 CineNova is a user-centric movie companion web application that utilizes openAI to streamline entertainment decisions by providing personalized recommendations, ensuring an effortless and tailored experience for every user's unique purpose of watching movies.
 
 #### Part 1:
-![book1 Demo](/client/public/book1.gif)
+![book1 Demo](/client/public/images/book1.gif)
 #### Part 2:
-![book2 Demo](/client/public/book2.gif)
+![book2 Demo](/client/public/images/book2.gif)
 #### Part 3:
-![book3 Demo](/client/public/book3.gif)
+![book3 Demo](/client/public/images/book3.gif)
 
 ### Technologies: 
 
@@ -26,19 +26,15 @@ CineNova is a user-centric movie companion web application that utilizes openAI 
 | concurrently 	| react-router-dom 	|          	| vitest-dom                	|
 | nodemon      	|                 	|          	|                           	|
  
+## DB SCHEMA
+![schema](/client/public/images/schema.png)
 
-1. Trello: https://trello.com/b/TMAKO7Or/film-recommendation-app
-2. Project pitch: https://zhjiang1103.bit.ai/docs/view/FZdUAI2gtU2G4qES
-
-## Nice-to-have/secondary or stretch goals: 
-1. Near-By Page: Finding nearby movies in theaters on a map
-2. Community and social feature: Discussion and groups
 
 ## Step-by-Step Setting up Instructions - To use this project as your starting point  🚀  
 ### To create the whole project
 
 
-1. Go to your source directory in your terminal and run the command `https://github.com/zhjiang1103/finalproject.git NAMENEWDIRECTORY`
+1. Go to your source directory in your terminal and run the command `https://github.com/zhjiang1103/bookManagement.git NAMENEWDIRECTORY`
 
 2. To clean the owner git out of the main directory, run the command `rm -rf .git`
 
@@ -70,9 +66,7 @@ ISSUER=""
 
 7. If you want to run both servers concurrently (which is already a npm dependency on the server) you can keep the script in the package.json in the server that reads `"dev": " concurrently 'npm start' 'cd .. && cd client && npm run dev' "`. If you run the command `npm run dev` from within your server, both the client and backend servers will start.
 
-10. Go to localhost:3000 and you should see something like this  💪
-
-![You will something like this in your terminal.](https://d2j4gdpjmxjmy3.cloudfront.net/v2/147471/contents/evmDhgkElJjrKFRp/mw1920_Screen_Shot_2023-10-23_at_11.20.51_AM.png)
+10. Go to localhost:3000  💪
 
 ⚡ **Notes** ⚡  
 * React requires **Node >= 14.0.0** & **npm >= 5.6**
