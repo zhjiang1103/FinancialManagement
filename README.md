@@ -29,9 +29,8 @@ CineNova is a user-centric movie companion web application that utilizes openAI 
 ## DB SCHEMA
 ![schema](/client/public/images/schema.png)
 
-## Test Summary:
-1. 
-The `Introduction` component is tested to ensure it renders a welcome message, a platform description, and an `AuthNav` component. The tests use the `render` and `screen` utilities from `@testing-library/react` to render the component and query elements for testing. Each test asserts that the expected elements are rendered in the component, providing basic coverage for the component's rendering behavior.
+## Tests Summary:
+1. The `Introduction` component is tested to ensure it renders a welcome message, a platform description, and an `AuthNav` component. The tests use the `render` and `screen` utilities from `@testing-library/react` to render the component and query elements for testing. Each test asserts that the expected elements are rendered in the component, providing basic coverage for the component's rendering behavior.
 
 2. The `MovieCard` component test suite ensures that the component renders a card with the correct title, image, and a link to the book details page. It tests that the `MovieCard` component behaves as expected by verifying that the title and image are rendered correctly and that the link points to the correct book details page based on the provided ID. The tests use React Testing Library to render the component and assert that the expected elements are present and have the correct attributes.
 
