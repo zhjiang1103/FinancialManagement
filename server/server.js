@@ -4,8 +4,9 @@ const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
 const db = require('./db/db-connection.js');
-const OpenAI = require('openai');
+// const OpenAI = require('openai');
 const fetch = require('node-fetch');
+//const { fetchByID } = require('../client/src/API.js');
 
 
 
@@ -23,17 +24,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(REACT_BUILD_DIR, 'index.html'));
 });
 
-// create the get request to connect to DB
-app.get('/api/movies', async (req, res) => {
-  try {
-    // const { rows: contact } = await db.query('SELECT * FROM contact');
-    const { rows: movie } = await db.query('SELECT * FROM movies');
-    res.send(movie);
-  } catch (e) {
-    console.error(e);
-    return res.status(400).json({ e });
-  }
-});
+
 
 //Create post request to connect to DB, adding new user
 app.post('/api/users', cors(), async (req, res) => {
@@ -64,136 +55,219 @@ app.post('/api/users', cors(), async (req, res) => {
   }
 });
 
-//Create post request to connect to DB, adding new fav
-app.post('/api/fav', cors(), async (req, res) => {
-  console.log(req.body)
-
-  //console.log([req.body.email, req.body.api_id]);
-
-  const result = await db.query(
-    'INSERT INTO fav (user_email, movie_id) VALUES($1, $2) RETURNING *',
-    [req.body.user_email, req.body.movie_id]
-  );
-  console.log(result.rows[0]);
-  res.json(result.rows[0]);
-}
-);
-
-app.delete('/api/fav', cors(), async (req, res) => {
-
-  await db.query('DELETE FROM fav WHERE user_email = $1 and movie_id = $2', [req.query.user_email, req.query.movie_id]);
-  res.status(200).end();
-})
-
-app.get('/api/fav', async (req, res) => {
-  const favCheck = await db.query(
-    'SELECT * FROM fav WHERE user_email = $1 and movie_id = $2',
-    [req.query.user_email, req.query.movie_id]
-  );
-
-
-  if (favCheck.rows.length > 0) {
-    // fav already exists, you can send a response or handle it as needed
-    res.json({ isFav: true })
-
-  } else {
-    res.json({ isFav: false })
-  }
-})
-
-// create the get request to fetch user's fav movies
-app.get('/api/fav/:user_email', async (req, res) => {
+//Fetch books
+app.get("/api/books", async (req, res) =>  {
+    
   try {
-    const user_email = req.params.user_email; // Get user_email from the query parameter
-    const { rows: movieIds } = await db.query('SELECT movie_id FROM fav WHERE user_email = $1', [user_email]);
-    let movieResults = []
-    for (let movieObject of movieIds) {
-      let movieInfo = await fetchByID(movieObject.movie_id);
-      movieResults.push(movieInfo)
-    }
-    res.send(movieResults);
-  } catch (e) {
-    console.error(e);
-    return res.status(400).json({ e });
+      const urls = [
+          'https://www.googleapis.com/books/v1/volumes?q=subject:science+fiction&startIndex=3&maxResults=12',
+          'https://www.googleapis.com/books/v1/volumes?q=subject:cookbooks&maxResults=8',
+          'https://www.googleapis.com/books/v1/volumes?q=subject:manga&maxResults=8',
+          'https://www.googleapis.com/books/v1/volumes?q=subject:history&maxResults=8'
+      ];
+
+      const fetchBookData = async (url) => {
+          const response = await fetch(url);
+          const data = await response.json();
+          return data.items || [];
+      };
+
+      const allBookRequests = urls.map(url => fetchBookData(url));
+      const allBooksResults = await Promise.all(allBookRequests);
+
+      const demo_books = allBooksResults.flat();
+      res.status(200).json(demo_books);
+
+  } catch (error) {
+      console.error("Error Message!:", error.message);
+      res.status(500).json({ message: error.message });
   }
+
 });
 
-//Get recommendation using openAI API
-const openai = new OpenAI({ apiKey: process.env.openai_key });
 
-const getChat = async function (req, res, next) {
-  console.log("start", new Date())
-  const purpose = req.query.purpose; // Adjust this based on your client request structure
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: `Please provide 10 unique recommended movies as a JSON string that starts with [, and ends with ], representing an array of objects. Each recommendation object should have one property: name. The recommendation is for someone whose purpose of watching movie is ${purpose}.`  }],
-    model: "gpt-3.5-turbo",
-  });
+// //finds the user id based on the email
+async function getUserIdFromEmail(email) {
 
-  const content = JSON.parse(completion.choices[0].message.content);
-  req["ChatGptResult"] = content;
-  console.log("end", new Date())
+  const user = await db.query(
+      'SELECT user_id FROM users WHERE email = $1',
+       [email]
+  );
+  
+  return user.rows[0].user_id;
+}
 
-  //console.log('CB0');
+
+// //update and add feed events
+app.post("/api/feed", async (req, res) =>  {
+    
+  try {
+      
+      let {email, api_id, isFav, shelf_status } = req.body;
+
+      let user_id = await getUserIdFromEmail(email)
+
+      const existingEntry = await db.query("SELECT * FROM feeds WHERE api_id = $1 AND user_id = $2", [api_id, user_id]);
+
+      if (existingEntry.rows.length > 0) {
+
+          if (shelf_status === undefined) {
+              shelf_status = existingEntry.rows[0].shelf_status;
+          }
+
+          const updatedBook = await db.query(
+              "UPDATE feeds SET isFavorite = $1, shelf_status = $2 WHERE api_id = $3 AND user_id = $4 RETURNING *",
+              [isFav, shelf_status, api_id, user_id]
+          );
+          
+          res.status(200).json(updatedBook.rows[0]);
+      }
+      else {
+          const newItem = await db.query(
+              "INSERT INTO feeds (api_id, user_id, isfavorite, shelf_status) VALUES ($1, $2, $3, $4) RETURNING *", [api_id, user_id, isFav, shelf_status]
+          );
+
+          // Send back the new feed entry with a 201 Created status
+          res.status(201).json(newItem.rows[0]);
+      }
+
+  } catch (error) {
+      console.error("Error Message!:", error.message);
+      res.status(500).json({ message: error.message });
+  }
+
+});
+
+//gets all info about user's actions
+app.get("/api/profile/:email", async (req, res) =>  {
+    
+  try {
+      const { email } = req.params;
+      let loggedInUserId = await getUserIdFromEmail(email)
+      
+      const {rows : user_actions} = await db.query(`
+          SELECT u.user_id, f.*
+          FROM feeds f
+          JOIN users u ON f.user_id = u.user_id
+          WHERE u.user_id = $1`, [loggedInUserId]
+      );
+
+      if (user_actions.length === 0) {
+          res.status(200).json([]); 
+      } 
+      else {
+          res.status(200).json(user_actions);
+      }
+      
+  } catch (error) {
+      console.error("Error Message!:", error.message);
+      res.status(500).json({ message: error.message });
+  }
+
+});
+
+//queries for the user's action
+app.get("/api/feed/:email/:apiId", async (req, res) =>  {
+    
+  try {
+      const { email, apiId } = req.params;
+
+      let user_id = await getUserIdFromEmail(email)
+      const {rows : user_action} = await db.query('SELECT * FROM feeds WHERE user_id = $1 AND api_id = $2', [user_id, apiId]);
+  
+      if (user_action.length === 0) {
+          
+          res.status(404).json({ message: "User action not found" });
+      } else {
+          res.status(200).json(user_action);
+      }
+      
+  } catch (error) {
+      console.error("Error Message!:", error.message);
+      res.status(500).json({ message: error.message });
+  }
+
+});
+
+app.get('/api/books/my', async (req, res) =>{
+
+  //real connection with the DB eventonica
+  try{
+      const { rows: books } = await db.query('SELECT * FROM books');
+      res.send(books);
+  } catch(error){
+      console.log(error);
+      return res.status(400).json({error});
+
+  }
+
+})
+
+
+app.delete('/api/books/my/:id', async (req, res) =>{
+  try{
+  const bookId = req.params.id;
+  const deleteOperation = await db.query("DELETE FROM books WHERE id=$1", [bookId]);
+  res.status(200).end()
+  console.log(deleteOperation);
+  } catch(error){
+      console.log(error);
+      res.status(400).json({error});
+  }
+})
+
+app.put('/api/books/my/:id', async (req, res) =>{
+  try{
+      const bookId = req.params.id;
+      const { category } = req.body; 
+      const updateOperation = await db.query("UPDATE books SET category=$1 WHERE id=$2", [category, bookId]);
+      console.log(updateOperation);
+      res.status(200).end()
+  
+      } catch(error){
+          console.log(error);
+          res.status(400).json({error});
+      }
+})
+
+app.post('/api/books/my', async (req, res) =>{
+  try {
+     
+      const { title, author, img_url, category } = req.body;
+  
+      const result = await db.query(
+      "INSERT INTO books (title, author, img_url, category) VALUES ($1, $2, $3, $4) RETURNING *",
+          [title, author, img_url, category]
+      );
+      let dbResponse = result.rows[0];
+      console.log("db", dbResponse)
+      res.json(dbResponse);
+  } catch(error){
+      console.log(error);
+      res.status(400).json({error});
+  }
+})
+
+function isAdmin(email) {
+  return email === 'janetjiang1103@gmail.com'; 
+}
+
+function authorize(req, res, next) {
+  if (!isAdmin(req.user.email)) {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
   next();
 }
 
-//Using the result from chatGPT to fetch movie details from movie DB API
-const getMovieInfo = async function (req, res) {
-  const content = req["ChatGptResult"]
-  let movieDBResults = []
-  for (let recommendation of content) {
-    let movieInfo = await fetchDB(recommendation);
-    movieDBResults.push(movieInfo)
+app.get('/api/users', authorize, async (req, res) => {
+  try {
+    const { rows: users } = await db.query('SELECT * FROM users');
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
-  res.send(movieDBResults);
-}
-
-app.get('/recommendations', [getChat, getMovieInfo]);
-
-
-//function to do fetching by name
-const fetchDB = async (recommendation) => {
-  const apiKey = process.env.MovieDB_API_KEY
-  const url = `https://api.themoviedb.org/3/search/movie?query=${recommendation.name}&include_adult=false&language=en-US&primary_release_year=${recommendation.year}&page=1`;
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    }
-  };
-
-  const json = await fetch(url, options)
-    .then(res => res.json())
-    //.then(json => json)
-    .catch(err => console.error('error:' + err));
-  return json
-
-}
-
-//function to do fetching by ID
-const fetchByID = async (id) => {
-  const apiKey = process.env.MovieDB_API_KEY
-  const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    }
-  };
-
-  const json = await fetch(url, options)
-    .then(res => res.json())
-    //.then(json => json)
-    .catch(err => console.error('error:' + err));
-  return json
-
-}
-
-
-
-
+});
 
 
 

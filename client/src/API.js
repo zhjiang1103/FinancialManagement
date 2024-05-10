@@ -45,13 +45,11 @@ export function fetchByPerson(person){
 }
 
 //Search for movies by their ID in TMDB
-export function fetchByID(ID){
-    const apiUrl = `https://api.themoviedb.org/3/movie/${ID}?language=en-US`;
-    const apiKey = process.env.REACT_APP_API_KEY
-    
+export function fetchByID(id){
+    const apiUrl = `https://www.googleapis.com/books/v1/volumes/${id}`;
+
     return axios.get(apiUrl, {
         headers: {
-            Authorization: `Bearer ${apiKey}`,
             accept: 'application/json',
         }
     })

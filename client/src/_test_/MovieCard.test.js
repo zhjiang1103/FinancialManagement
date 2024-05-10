@@ -1,30 +1,39 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import MovieCard from '../components/MovieCard';
-import { BrowserRouter } from 'react-router-dom';
+import MovieCard from './MovieCard';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-// Mock the movie data
-const movie = {
-  id: 123,
-  title: 'Sample Movie',
-  poster_path: '/sample-poster.jpg',
-};
+describe('MovieCard', () => {
+  test('renders book card with title and image', () => {
+    const title = 'Test book';
+    const img = 'https://example.com/image.jpg';
+    const id = '123';
 
-test('renders MovieCard component', () => {
-  // Render the MovieCard component with the movie data
-  render(
-    <BrowserRouter>
-      <MovieCard movie={movie} />
-    </BrowserRouter>
-  );
+    render(
+      <Router>
+        <MovieCard title={title} img={img} id={id} />
+      </Router>
+    );
 
-  // Check if the movie title is rendered
-  const titleElement = screen.getByText('Sample Movie');
-  expect(titleElement).toBeInTheDocument();
+    const cardTitle = screen.getByText(title);
+    expect(cardTitle).toBeInTheDocument();
 
-  // Check if the movie poster is rendered
-  const posterElement = screen.getByAltText('Sample Movie');
-  expect(posterElement).toBeInTheDocument();
+    const cardImage = screen.getByRole('img');
+    expect(cardImage).toBeInTheDocument();
+    expect(cardImage).toHaveAttribute('src', img);
+  });
 
-  
+  test('renders link to book details page', () => {
+    const id = '123';
+
+    render(
+      <Router>
+        <MovieCard title="Test book" img="https://example.com/image.jpg" id={id} />
+      </Router>
+    );
+
+    const link = screen.getByRole('link');
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', `/movies/${id}`);
+  });
 });

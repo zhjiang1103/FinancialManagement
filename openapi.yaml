@@ -1,0 +1,136 @@
+
+info:
+  title: Book Management API
+  description: REST API of the back-end of Book Management .
+servers:
+  - url: http://localhost:8080/api
+    description: localhost
+paths:
+    /books:
+    get:
+      summary: Get popular books 
+      description: Gets the list of all popular books from google book api
+      responses:
+        '200':
+          description: The list of all books.
+          content:
+            application/json:
+              schema:
+                type: array
+                
+        '500':
+          $ref: "Error"
+    
+    /feed:
+    post:
+      summary: Create a user action
+      description: Creates a new action for this User
+      requestBody:
+        description: The action to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "janetjiang03@gmail.com"
+                api_id:
+                  type: string
+                  example: "Q6581097"
+                isFav:
+                  type: boolean
+                  example: true
+                shelf_status:
+                  type: number
+                  example: 0
+      responses:
+        '201':
+          description: The action object that was created
+        '500':
+          description: Error
+          
+  
+  /profile/:email:
+    get:
+      summary: get all info about user's actions
+      
+      responses:
+        '200':
+          description: all info about user's actions
+        '500':
+          description: Error
+          
+  /feed/:email/:apiId:
+    get:
+      summary: get all user's actions for a specific book
+      
+      responses:
+        '200':
+          description: all user's actions for a specific book
+        '500':
+          description: Error
+
+  /books/my:
+    get:
+      summary: get all books from my library
+      
+      responses:
+        '200':
+          description: a list of books from my library
+        '500':
+          description: Error
+    post:
+      summary: Create a book info
+      description: Creates a new book info for this User
+      requestBody:
+        description: The book to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "The Little Prince"
+                author:
+                  type: string
+                  example: "Antoine de Saint-Exupéry"
+                img_url:
+                  type: string
+                  example: "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG"
+                category:
+                  type: string
+                  example: "fiction"
+      responses:
+        '201':
+          description: The action object that was created
+        '400':
+          description: Error
+
+  /books/my/:id:
+    delete:
+      summary: Delete a book from this user's library
+      responses:
+        '200':
+          description: book deleted successfully
+        '400':
+          description: Bad Request (cannot delete this book)
+    put:
+      summary: Update a book from this user's library
+      responses:
+        '200':
+          description: book info updated successfully
+        '400':
+          description: Bad Request (cannot update this book)
+    
+    /users:
+    get:
+      summary: get all users info only for admin email account
+      responses:
+        '200':
+          description: a list of users info
+        '500':
+          description: Error

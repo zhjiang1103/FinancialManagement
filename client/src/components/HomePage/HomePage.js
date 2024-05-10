@@ -1,21 +1,11 @@
 import { useState, useEffect } from 'react'
 import MovieCard from '../MovieCard';
-import MovieClip from '../MovieClip';
 import { fetchPopular } from '../../API';
-
-
-
-
-
 
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
-  const videoId = ["6JnN1DmbqoU", "GYOQBfT8UU4", "uY4efoSe-Kc", "rYY5QdEGEZw", "UqcGdmJJVTY", "hyyyKcfJRGQ", "cg5z7wgOUig", "V2fJv2omoZU"]
-  // Generate a random index between 0 and the length of the videoIds array
-  const randomIndex = Math.floor(Math.random() * videoId.length);
-  // Select the video ID at the random index
-  const randomVideoId = videoId[randomIndex];
+  const [search, setSearch] = useState('');
   
   // Make the GET request to fetch popular movies
 
@@ -23,32 +13,63 @@ const HomePage = () => {
 
     const fetchMovies = async () => {
       try {
-        const response = await fetchPopular()
+        const response = await fetch("/api/books");
 
-        const formattedMovies = response.data.results;
+        const formattedMovies = await response.json();
         setMovies(formattedMovies);
         console.log(formattedMovies); // Log the formatted movies
+        console.log (movies[0].volumeInfo.imageLinks.thumbnail)
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
     };
 
     fetchMovies(); // Call the fetchMovies function
+    console.log (movies.volumeInfo)
 
   }, []); // The empty dependency array ensures the effect runs once
+  
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value)
+  };
 
   return (
     <div>
-      <div className='centered-video'>
-        <MovieClip videoId={randomVideoId} />
-      </div>
-      <div className='title'><h2>Popular Movies</h2></div>
+      <input 
+          className="search-bar"
+          placeholder="search a book by title/author"
+          type='text'
+          value={search}
+          onChange={handleSearchChange}
+        />
+      <div className='title'><h2>Popular Books</h2></div>
       
       <ul>
         <div className="movie-list">
-          {movies.map(movie => (
+        {
+            movies.filter((item) => {
+
+              if(!search) { //empty str is falsy(false). !false => true
+                return true
+              }
+
+              const title = item?.volumeInfo?.title || "";
+              const authors = item?.volumeInfo?.authors || [];
+              const searchLower = search.toLowerCase();
+
+              return (
+                title.toLowerCase().includes(searchLower) || 
+                authors.some(author => author.toLowerCase().includes(searchLower))
+              );
+            })
+
+          .map((movie, index) => (
+            
             <div className="movie-card">
-              <li key={movie.id}><MovieCard movie={movie} /></li>
+              <li><MovieCard key={index}
+                             img = {movie.volumeInfo.imageLinks?.thumbnail}
+                             id = {movie?.id} /></li>
+                             
             </div>
           ))}
         </div>

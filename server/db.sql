@@ -1,9 +1,9 @@
 --
 -- PostgreSQL database dump
---
+-- pg_dump -U tpl1222_1 -d book -f db.sql
 
 -- Dumped from database version 15.4
--- Dumped by pg_dump version 15.4 (Homebrew)
+-- Dumped by pg_dump version 15.6 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,23 +21,25 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: fav; Type: TABLE; Schema: public; Owner: tpl1222_1
+-- Name: books; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE TABLE public.fav (
-    id integer NOT NULL,
-    user_email character varying(255),
-    movie_id integer
+CREATE TABLE public.books (
+    book_id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    img_url character varying(500),
+    category character varying(255)
 );
 
 
-ALTER TABLE public.fav OWNER TO tpl1222_1;
+ALTER TABLE public.books OWNER TO tpl1222_1;
 
 --
--- Name: fav_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+-- Name: books_book_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE SEQUENCE public.fav_id_seq
+CREATE SEQUENCE public.books_book_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -46,33 +48,36 @@ CREATE SEQUENCE public.fav_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.fav_id_seq OWNER TO tpl1222_1;
+ALTER TABLE public.books_book_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: fav_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+-- Name: books_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
-ALTER SEQUENCE public.fav_id_seq OWNED BY public.fav.id;
+ALTER SEQUENCE public.books_book_id_seq OWNED BY public.books.book_id;
 
 
 --
--- Name: movies; Type: TABLE; Schema: public; Owner: tpl1222_1
+-- Name: feeds; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE TABLE public.movies (
-    id integer NOT NULL,
-    name character varying(255),
-    api_id integer
+CREATE TABLE public.feeds (
+    feed_id integer NOT NULL,
+    api_id character varying(255) NOT NULL,
+    user_id integer,
+    isfavorite boolean DEFAULT false,
+    shelf_status integer,
+    CONSTRAINT feeds_shelf_status_check CHECK ((shelf_status = ANY (ARRAY[0, 1, 2])))
 );
 
 
-ALTER TABLE public.movies OWNER TO tpl1222_1;
+ALTER TABLE public.feeds OWNER TO tpl1222_1;
 
 --
--- Name: movies_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+-- Name: feeds_feed_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE SEQUENCE public.movies_id_seq
+CREATE SEQUENCE public.feeds_feed_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -81,13 +86,13 @@ CREATE SEQUENCE public.movies_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.movies_id_seq OWNER TO tpl1222_1;
+ALTER TABLE public.feeds_feed_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: movies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+-- Name: feeds_feed_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
-ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
+ALTER SEQUENCE public.feeds_feed_id_seq OWNED BY public.feeds.feed_id;
 
 
 --
@@ -95,20 +100,20 @@ ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
 --
 
 CREATE TABLE public.users (
-    id integer NOT NULL,
-    lastname character varying(255),
-    firstname character varying(255),
-    email character varying(255)
+    user_id integer NOT NULL,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL
 );
 
 
 ALTER TABLE public.users OWNER TO tpl1222_1;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE SEQUENCE public.users_id_seq
+CREATE SEQUENCE public.users_user_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -117,50 +122,54 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO tpl1222_1;
+ALTER TABLE public.users_user_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
--- Name: fav id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
---
-
-ALTER TABLE ONLY public.fav ALTER COLUMN id SET DEFAULT nextval('public.fav_id_seq'::regclass);
+ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
--- Name: movies id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
+-- Name: books book_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movies_id_seq'::regclass);
-
-
---
--- Name: users id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
---
-
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+ALTER TABLE ONLY public.books ALTER COLUMN book_id SET DEFAULT nextval('public.books_book_id_seq'::regclass);
 
 
 --
--- Data for Name: fav; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+-- Name: feeds feed_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.fav (id, user_email, movie_id) FROM stdin;
+ALTER TABLE ONLY public.feeds ALTER COLUMN feed_id SET DEFAULT nextval('public.feeds_feed_id_seq'::regclass);
+
+
+--
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
+
+
+--
+-- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+--
+
+COPY public.books (book_id, title, author, img_url, category) FROM stdin;
 \.
 
 
 --
--- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+-- Data for Name: feeds; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.movies (id, name, api_id) FROM stdin;
-1	Saw X	951491
+COPY public.feeds (feed_id, api_id, user_id, isfavorite, shelf_status) FROM stdin;
+3	uefwmdROKTAC	1	\N	\N
+2	5yAsEAAAQBAJ	1	\N	1
+4	TX5KCAAAQBAJ	1	\N	1
+1	2O0QDQAAQBAJ	1	\N	0
+5	5K7uDwAAQBAJ	1	f	0
 \.
 
 
@@ -168,47 +177,54 @@ COPY public.movies (id, name, api_id) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.users (id, lastname, firstname, email) FROM stdin;
-1	Wong	Steven	stevenWong@gmail.com
-4	Jiang	Janet	janetjiang1103@gmail.com
+COPY public.users (user_id, first_name, last_name, email) FROM stdin;
+1	Janet	Jiang	janetjiang1103@gmail.com
 \.
 
 
 --
--- Name: fav_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+-- Name: books_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.fav_id_seq', 1, false);
-
-
---
--- Name: movies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
---
-
-SELECT pg_catalog.setval('public.movies_id_seq', 1, true);
+SELECT pg_catalog.setval('public.books_book_id_seq', 1, false);
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+-- Name: feeds_feed_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 4, true);
-
-
---
--- Name: fav fav_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
---
-
-ALTER TABLE ONLY public.fav
-    ADD CONSTRAINT fav_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.feeds_feed_id_seq', 5, true);
 
 
 --
--- Name: movies movies_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.movies
-    ADD CONSTRAINT movies_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.users_user_id_seq', 1, true);
+
+
+--
+-- Name: books books_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.books
+    ADD CONSTRAINT books_pkey PRIMARY KEY (book_id);
+
+
+--
+-- Name: feeds feeds_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.feeds
+    ADD CONSTRAINT feeds_pkey PRIMARY KEY (feed_id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
 
 
 --
@@ -216,7 +232,15 @@ ALTER TABLE ONLY public.movies
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: feeds feeds_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.feeds
+    ADD CONSTRAINT feeds_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
 
 
 --

@@ -98,6 +98,20 @@ ul,li {
   display: block;
 }
 
+.search-bar {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+  outline: none;
+  width: 100%;
+  max-width: 600px; 
+  box-sizing: border-box; 
+  margin-top: 5%;
+  color:black;
+}
+
 .centered-video {
   width: 50%;
   display: block;
@@ -174,6 +188,3 @@ button{
   margin-left: 5px !important ;
 }
 
-img{
-  margin-left: 10%;
-}

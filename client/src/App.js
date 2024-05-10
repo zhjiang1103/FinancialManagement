@@ -1,14 +1,16 @@
 import "./App.css";
+import Introduction from "./components/Introduction";
 import NavBar from "./components/nav-bar";
 import HomePage from "./components/HomePage/HomePage";
-import SearchPage from "./components/SearchPage/SearchPage";
-import Recommendation from "./components/RecomPage/Recommendation";
+import MyLibrary from "./components/MyLibraryPage/MyLibrary";
 import MovieDetail from "./components/MovieDetail";
 import Profile from "./components/ProfilePage/profile";
 import { useState} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { Link, BrowserRouter as Router } from 'react-router-dom'
+
 
 
 
@@ -25,30 +27,29 @@ function App() {
 
  
 return (
-    <div id="app" className="d-flex flex-column h-100">
-      <NavBar />
 
+    <div id="app" className="d-flex flex-column h-100">
+      
+        <NavBar />
+      
       <div className="container flex-grow-1">
       {isAuthenticated ? (
           <>
             <span>Hello <Link to="/profile">{user.name}</Link></span>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/movies/:id" element={<MovieDetail user={user} />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/recommendation" element={<Recommendation />} />
+              <Route path="/movies/:id" element={<MovieDetail />} />
+              <Route path="/MyLibrary" element={<MyLibrary />} />
               <Route path="/profile" element={<Profile user={user} />} />
             </Routes>
           </>
         ) : (
-          <>
-          <span>Hello from Cinenova!!! <strong>Please Log in or sign up!</strong></span>
-          <img src = "http://www.animated-gifs.fr/category_objects/robots/10660215.gif" alt = "Robot gif"></img>
-          </>
+          <Introduction />
         )}
       </div>
-
+   
     </div>
+ 
   );
 }
 

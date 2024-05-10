@@ -1,34 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 import {Button} from "react-bootstrap"
 import MovieCard from '../MovieCard';
-import { fetchFavList } from '../../API';
+import { fetchByID } from '../../API';
+//import SelectStatus from '../components/SelectStatus';
 
+const Profile = () => {
+  const { isAuthenticated, user } = useAuth0();
+  const [allActions, setAllActions] = useState([])
+  const [books, setBooks] = useState([])
 
-const Profile = (props) => {
-  let user = props.user;
-  const [favMovie, setFavMovie] = useState()
+  //gets all infos
+  async function getUserAllActions(email) {
 
-//async function to get list of user's favorite movie list
-  const handleFavoriteClick = async () => {
     try {
-      const response = await fetchFavList(user.email)
+      const response = await fetch(`/api/profile/${email}`);
 
-      const formattedMovie = response.data;
-      console.log("response", response.data)
-      setFavMovie(formattedMovie);
-      console.log(formattedMovie); // Log the formatted movies
+      const allActions = await response.json();
+      setAllActions(allActions);
+      console.log(allActions)
 
     } catch (error) {
-      console.error('Error fetching Fav movies:', error);
+      console.log(error.message)
     }
-  };
+  }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      getUserAllActions(user.email);
+    }
+  }, [isAuthenticated, user]); 
+
+  
+  async function getBookById() {
+    try {
+      let bookResults = []
+      for (let book of allActions){
+        const response = await fetchByID(book.api_id)
+        const bookInfo = response.data;
+        bookResults.push(bookInfo)
+      }
+    
+        setBooks(bookResults)
+        console.log(books)
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+useEffect(() => {
+    getBookById();
+}, [allActions]);
+
+
+const handleSortClick = () => {
+  const sorted = [...books].sort((a, b) =>
+    a.volumeInfo.title.localeCompare(b.volumeInfo.title)
+  );
+  setBooks(sorted);
+};
 
 
   return (
     <div>
       <div className="row align-items-center profile-header">
         <div className="col-md text-center text-md-left">
-          <h2>{user.email}</h2>
+          <h2>My Books</h2>
         </div>
       </div>
       <img src="https://cdn-icons-png.flaticon.com/128/2102/2102633.png"
@@ -36,26 +74,31 @@ const Profile = (props) => {
         className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
       />
       
-      <div>
-        <Button variant="outline-success" onClick={handleFavoriteClick}>Your Favorited Movie List</Button>
+     
+       
 
 
-
-      </div>
-      {favMovie && favMovie.length > 0 && ( // Check if favMovie exists and has items
-        <div>
+      <button className="btn btn-primary" onClick={handleSortClick}>
+          Sort by Title
+      </button>
+      
          
-         <ul>
+      <ul>
         <div className="movie-list">
-          {favMovie.map(movie => (
+        {books.map((book, index) => (
             <div className="movie-card">
-              <li key={movie.id}><MovieCard movie={movie}/></li>
+            
+              <li><MovieCard key={index}
+                             img = {book.volumeInfo.imageLinks?.thumbnail}
+                             id = {book?.id} /></li>
+                             
             </div>
-          ))}
+        ))}
+        
         </div>
       </ul>
-        </div>
-      )}
+      
+   
     </div>
 
 
