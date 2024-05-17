@@ -5,13 +5,13 @@ import Introduction from './Introduction';
 describe('Introduction', () => {
   test('renders welcome message', () => {
     const { getByText } = render(<Introduction />);
-    const welcomeMessage = screen.getByText(/Welcome to Book Management!/i);
+    const welcomeMessage = screen.getByText(/Welcome to Financial Manager!/i);
     expect(welcomeMessage).toBeInTheDocument();
   });
 
   test('renders platform description', () => {
     const { getByText } = render(<Introduction />);
-    const description = screen.getByText(/We provide a platform for you to manage your personal library and discover new books./i);
+    const description = screen.getByText(/We provide a platform for you to manage your personal financial health, and helping you make informed financial decisions./i);
     expect(description).toBeInTheDocument();
   });
 

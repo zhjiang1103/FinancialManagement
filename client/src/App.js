@@ -1,15 +1,15 @@
 import "./App.css";
 import Introduction from "./components/Introduction";
 import NavBar from "./components/nav-bar";
-import HomePage from "./components/HomePage/HomePage";
-import MyLibrary from "./components/MyLibraryPage/MyLibrary";
-import MovieDetail from "./components/MovieDetail";
-import Profile from "./components/ProfilePage/profile";
+import GoalPage from "./components/GoalPage/GoalPage";
+import TransactionsPage from "./components/TransactionsPage/TransactionsPage";
 import { useState} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import Loading from "./components/loading";
 import { Route, Routes } from 'react-router-dom';
 import { Link, BrowserRouter as Router } from 'react-router-dom'
+import ReportPage from "./components/ReportPage/ReportPage";
+
 
 
 
@@ -37,10 +37,9 @@ return (
           <>
             <span>Hello <Link to="/profile">{user.name}</Link></span>
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/movies/:id" element={<MovieDetail />} />
-              <Route path="/MyLibrary" element={<MyLibrary />} />
-              <Route path="/profile" element={<Profile user={user} />} />
+              <Route path="/" element={<GoalPage />} />
+              <Route path="/transactions" element={<TransactionsPage />} />
+              <Route path="/report" element={<ReportPage user={user} />} />
             </Routes>
           </>
         ) : (

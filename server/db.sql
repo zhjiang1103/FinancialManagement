@@ -1,6 +1,6 @@
 --
 -- PostgreSQL database dump
--- pg_dump -U tpl1222_1 -d book -f db.sql
+-- pg_dump -U tpl1222_1 -d finance -f db.sql
 
 -- Dumped from database version 15.4
 -- Dumped by pg_dump version 15.6 (Homebrew)
@@ -21,63 +21,24 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: books; Type: TABLE; Schema: public; Owner: tpl1222_1
+-- Name: goal; Type: TABLE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE TABLE public.books (
-    book_id integer NOT NULL,
-    title character varying(255) NOT NULL,
-    author character varying(255) NOT NULL,
-    img_url character varying(500),
-    category character varying(255)
-);
-
-
-ALTER TABLE public.books OWNER TO tpl1222_1;
-
---
--- Name: books_book_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
---
-
-CREATE SEQUENCE public.books_book_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.books_book_id_seq OWNER TO tpl1222_1;
-
---
--- Name: books_book_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
---
-
-ALTER SEQUENCE public.books_book_id_seq OWNED BY public.books.book_id;
-
-
---
--- Name: feeds; Type: TABLE; Schema: public; Owner: tpl1222_1
---
-
-CREATE TABLE public.feeds (
-    feed_id integer NOT NULL,
-    api_id character varying(255) NOT NULL,
+CREATE TABLE public.goal (
+    goal_id integer NOT NULL,
     user_id integer,
-    isfavorite boolean DEFAULT false,
-    shelf_status integer,
-    CONSTRAINT feeds_shelf_status_check CHECK ((shelf_status = ANY (ARRAY[0, 1, 2])))
+    goal character varying(255) NOT NULL,
+    amount integer NOT NULL
 );
 
 
-ALTER TABLE public.feeds OWNER TO tpl1222_1;
+ALTER TABLE public.goal OWNER TO tpl1222_1;
 
 --
--- Name: feeds_feed_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+-- Name: goal_goal_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
 --
 
-CREATE SEQUENCE public.feeds_feed_id_seq
+CREATE SEQUENCE public.goal_goal_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -86,13 +47,51 @@ CREATE SEQUENCE public.feeds_feed_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.feeds_feed_id_seq OWNER TO tpl1222_1;
+ALTER TABLE public.goal_goal_id_seq OWNER TO tpl1222_1;
 
 --
--- Name: feeds_feed_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+-- Name: goal_goal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
 --
 
-ALTER SEQUENCE public.feeds_feed_id_seq OWNED BY public.feeds.feed_id;
+ALTER SEQUENCE public.goal_goal_id_seq OWNED BY public.goal.goal_id;
+
+
+--
+-- Name: transactions; Type: TABLE; Schema: public; Owner: tpl1222_1
+--
+
+CREATE TABLE public.transactions (
+    transaction_id integer NOT NULL,
+    type character varying(255) NOT NULL,
+    user_id integer,
+    amount integer,
+    month character varying(255),
+    year integer
+);
+
+
+ALTER TABLE public.transactions OWNER TO tpl1222_1;
+
+--
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: tpl1222_1
+--
+
+CREATE SEQUENCE public.transactions_transaction_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transactions_transaction_id_seq OWNER TO tpl1222_1;
+
+--
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tpl1222_1
+--
+
+ALTER SEQUENCE public.transactions_transaction_id_seq OWNED BY public.transactions.transaction_id;
 
 
 --
@@ -132,17 +131,17 @@ ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
--- Name: books book_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
+-- Name: goal goal_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.books ALTER COLUMN book_id SET DEFAULT nextval('public.books_book_id_seq'::regclass);
+ALTER TABLE ONLY public.goal ALTER COLUMN goal_id SET DEFAULT nextval('public.goal_goal_id_seq'::regclass);
 
 
 --
--- Name: feeds feed_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
+-- Name: transactions transaction_id; Type: DEFAULT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.feeds ALTER COLUMN feed_id SET DEFAULT nextval('public.feeds_feed_id_seq'::regclass);
+ALTER TABLE ONLY public.transactions ALTER COLUMN transaction_id SET DEFAULT nextval('public.transactions_transaction_id_seq'::regclass);
 
 
 --
@@ -153,23 +152,27 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 
 
 --
--- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+-- Data for Name: goal; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.books (book_id, title, author, img_url, category) FROM stdin;
+COPY public.goal (goal_id, user_id, goal, amount) FROM stdin;
+3	1	Vocation	6000
 \.
 
 
 --
--- Data for Name: feeds; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
+-- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: tpl1222_1
 --
 
-COPY public.feeds (feed_id, api_id, user_id, isfavorite, shelf_status) FROM stdin;
-3	uefwmdROKTAC	1	\N	\N
-2	5yAsEAAAQBAJ	1	\N	1
-4	TX5KCAAAQBAJ	1	\N	1
-1	2O0QDQAAQBAJ	1	\N	0
-5	5K7uDwAAQBAJ	1	f	0
+COPY public.transactions (transaction_id, type, user_id, amount, month, year) FROM stdin;
+1	expense	1	50	February	2024
+3	income	1	2050	February	2022
+5	savings	1	500	February	2024
+6	expense	1	2000	February	2021
+7	expense	1	2000	February	2021
+8	expense	1	2000	February	2024
+9	expense	1	450	February	2024
+13	income	1	3000	February	2024
 \.
 
 
@@ -183,17 +186,17 @@ COPY public.users (user_id, first_name, last_name, email) FROM stdin;
 
 
 --
--- Name: books_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+-- Name: goal_goal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.books_book_id_seq', 1, false);
+SELECT pg_catalog.setval('public.goal_goal_id_seq', 3, true);
 
 
 --
--- Name: feeds_feed_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
+-- Name: transactions_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tpl1222_1
 --
 
-SELECT pg_catalog.setval('public.feeds_feed_id_seq', 5, true);
+SELECT pg_catalog.setval('public.transactions_transaction_id_seq', 13, true);
 
 
 --
@@ -204,19 +207,19 @@ SELECT pg_catalog.setval('public.users_user_id_seq', 1, true);
 
 
 --
--- Name: books books_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+-- Name: goal goal_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.books
-    ADD CONSTRAINT books_pkey PRIMARY KEY (book_id);
+ALTER TABLE ONLY public.goal
+    ADD CONSTRAINT goal_pkey PRIMARY KEY (goal_id);
 
 
 --
--- Name: feeds feeds_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
+-- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.feeds
-    ADD CONSTRAINT feeds_pkey PRIMARY KEY (feed_id);
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT transactions_pkey PRIMARY KEY (transaction_id);
 
 
 --
@@ -236,11 +239,19 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: feeds feeds_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
+-- Name: goal goal_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
 --
 
-ALTER TABLE ONLY public.feeds
-    ADD CONSTRAINT feeds_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+ALTER TABLE ONLY public.goal
+    ADD CONSTRAINT goal_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: transactions transactions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tpl1222_1
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT transactions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
 
 
 --

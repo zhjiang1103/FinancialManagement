@@ -1,32 +1,32 @@
-
+openapi: 3.0.0
 info:
-  title: Book Management API
-  description: REST API of the back-end of Book Management .
+  title: Financial Management API
+  description: REST API of the back-end of Financial Management .
 servers:
   - url: http://localhost:8080/api
     description: localhost
 paths:
-    /books:
+    /transactions/:email:
     get:
-      summary: Get popular books 
-      description: Gets the list of all popular books from google book api
+      summary: Get user's all transactions 
+      description: Gets the list of all transactions info for the user
       responses:
         '200':
-          description: The list of all books.
+          description: The list of all transactions.
           content:
             application/json:
               schema:
                 type: array
                 
-        '500':
+        '400':
           $ref: "Error"
     
-    /feed:
+    /transactions:
     post:
-      summary: Create a user action
-      description: Creates a new action for this User
+      summary: Create a user transaction
+      description: Creates a new transaction for this User
       requestBody:
-        description: The action to create
+        description: The transaction to create
         required: true
         content:
           application/json:
@@ -36,101 +36,217 @@ paths:
                 email:
                   type: string
                   example: "janetjiang03@gmail.com"
-                api_id:
+                type:
                   type: string
-                  example: "Q6581097"
-                isFav:
-                  type: boolean
-                  example: true
-                shelf_status:
-                  type: number
-                  example: 0
+                  example: "savings"
+                amount:
+                  type: int
+                  example: 4000
+                month:
+                  type: string
+                  example: May
+                year:
+                  type: int
+                  example: 2024
       responses:
         '201':
-          description: The action object that was created
-        '500':
+          description: The transaction object that was created
+        '400':
           description: Error
           
   
-  /profile/:email:
+  /goal/:email:
     get:
-      summary: get all info about user's actions
+      summary: get financial goal info about the user
       
       responses:
         '200':
-          description: all info about user's actions
-        '500':
-          description: Error
-          
-  /feed/:email/:apiId:
-    get:
-      summary: get all user's actions for a specific book
-      
-      responses:
-        '200':
-          description: all user's actions for a specific book
-        '500':
+          description: all info about user's financial goal
+        '400':
           description: Error
 
-  /books/my:
-    get:
-      summary: get all books from my library
-      
-      responses:
-        '200':
-          description: a list of books from my library
-        '500':
-          description: Error
+ /api/users:
     post:
-      summary: Create a book info
-      description: Creates a new book info for this User
+      summary: Register a new user
       requestBody:
-        description: The book to create
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                title:
+                lastname:
                   type: string
-                  example: "The Little Prince"
-                author:
+                firstname:
                   type: string
-                  example: "Antoine de Saint-Exupéry"
-                img_url:
+                email:
                   type: string
-                  example: "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG"
-                category:
-                  type: string
-                  example: "fiction"
+                  format: email
+              required:
+                - lastname
+                - firstname
+                - email
       responses:
-        '201':
-          description: The action object that was created
-        '400':
-          description: Error
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lastname:
+                    type: string
+                  firstname:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string         
 
-  /books/my/:id:
+ /api/transactions/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: Transaction ID
     delete:
-      summary: Delete a book from this user's library
+      summary: Delete a transaction
       responses:
         '200':
-          description: book deleted successfully
+          description: Transaction deleted successfully
         '400':
-          description: Bad Request (cannot delete this book)
+          description: Failed to delete transaction
+
     put:
-      summary: Update a book from this user's library
+      summary: Update a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                type:
+                  type: string
+                amount:
+                  type: integer
+                month:
+                  type: string
+                year:
+                  type: integer
+              required:
+                - email
+                - type
+                - amount
+                - month
+                - year
       responses:
         '200':
-          description: book info updated successfully
-        '400':
-          description: Bad Request (cannot update this book)
-    
-    /users:
-    get:
-      summary: get all users info only for admin email account
-      responses:
-        '200':
-          description: a list of users info
+          description: Transaction updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  type:
+                    type: string
+                  amount:
+                    type: integer
+                  month:
+                    type: string
+                  year:
+                    type: integer
         '500':
-          description: Error
+          description: Internal server error
+
+  /api/goal/my:
+    post:
+      summary: Create a new financial goal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                goal:
+                  type: string
+                amount:
+                  type: integer
+              required:
+                - email
+                - goal
+                - amount
+      responses:
+        '200':
+          description: New goal created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goal_id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  goal:
+                    type: string
+                  amount:
+                    type: integer
+        '400':
+          description: Failed to create goal
+    put:
+      summary: Update a financial goal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                goal:
+                  type: string
+                amount:
+                  type: integer
+              required:
+                - email
+                - goal
+                - amount
+      responses:
+        '200':
+          description: Goal updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goal_id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  goal:
+                    type: string
+                  amount:
+                    type: integer
+        '500':
+          description: Internal server error 

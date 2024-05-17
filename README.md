@@ -1,12 +1,12 @@
-# Project Name: Book Management
-Book Management provide a platform for you to manage your personal library and discover new books.
+# Project Name: Financial Management
+Financial Manager provide a platform for you to manage your personal financial health, and helping you make informed financial decisions.
 
 #### Part 1:
-![book1 Demo](/client/public/images/book1.gif)
+![financial1 Demo](/client/public/images/financial1.gif)
 #### Part 2:
-![book2 Demo](/client/public/images/book2.gif)
+![financial2 Demo](/client/public/images/financial2.gif)
 #### Part 3:
-![book3 Demo](/client/public/images/book3.gif)
+![financial3 Demo](/client/public/images/financial3.gif)
 
 ### Technologies: 
 
@@ -32,7 +32,13 @@ Book Management provide a platform for you to manage your personal library and d
 ## Tests Summary:
 1. The `Introduction` component is tested to ensure it renders a welcome message, a platform description, and an `AuthNav` component. The tests use the `render` and `screen` utilities from `@testing-library/react` to render the component and query elements for testing. Each test asserts that the expected elements are rendered in the component, providing basic coverage for the component's rendering behavior.
 
-2. The `MovieCard` component test suite ensures that the component renders a card with the correct title, image, and a link to the book details page. It tests that the `MovieCard` component behaves as expected by verifying that the title and image are rendered correctly and that the link points to the correct book details page based on the provided ID. The tests use React Testing Library to render the component and assert that the expected elements are present and have the correct attributes.
+2. The test suite for the `AddGoalForm` component verifies its functionality, ensuring that it correctly handles user input and triggers the handleAddGoal function with the expected values. The test suite covers the following scenarios:
+Rendering: It checks if the form renders correctly with input fields for a new goal and amount, as well as an "Add Goal" button.
+User Input: It simulates user input by changing the values in the goal and amount input fields.
+Button Click: It clicks the "Add Goal" button to trigger the handleAddGoal function.
+Function Calls: It asserts that the `handleAddGoal`, `setNewGoal`, and `setNewAmount` functions are called with the correct values when the button is clicked.
+
+
 
 ## Step-by-Step Setting up Instructions - To use this project as your starting point  🚀  
 ### To create the whole project

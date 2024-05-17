@@ -26,11 +26,11 @@ const Logo = ({ icon, text }) => (
 const NavBar = () => (
   
     <nav className="flex justify-between items-center bg-yellow-600 text-white py-4 px-6">
-      <Logo icon={<RiBook2Line />} text="Book Management" />
+      <Logo icon={<RiBook2Line />} text="Financial Management" />
       <ul className="flex">
-        <NavItem icon={<FaHome />} to="/">Home</NavItem>
-        <NavItem icon={<FaBook />} to="/Mylibrary">My Library</NavItem>
-        <NavItem icon={<FaUser />} to="/profile">Profile</NavItem>
+        <NavItem icon={<FaHome />} to="/">Goal</NavItem>
+        <NavItem icon={<FaBook />} to="/transactions">Transactions</NavItem>
+        <NavItem icon={<FaUser />} to="/report">Report</NavItem>
         <AuthNav />
       </ul>
     </nav>
